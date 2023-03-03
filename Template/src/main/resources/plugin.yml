@@ -1,0 +1,6 @@
+name: Duels
+version: '${project.version}'
+main: me.imfighting.duels.DuelsPlugin
+commands:
+  setlobby:
+  setnpc:

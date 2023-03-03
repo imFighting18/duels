@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.github.DevNatan.inventory-framework:inventory-framework:2.5.4-rc.1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/DevNatan/inventory-framework/inventory-framework/2.5.4-rc.1/inventory-framework-2.5.4-rc.1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/DevNatan/inventory-framework/inventory-framework/2.5.4-rc.1/inventory-framework-2.5.4-rc.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/DevNatan/inventory-framework/inventory-framework/2.5.4-rc.1/inventory-framework-2.5.4-rc.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
