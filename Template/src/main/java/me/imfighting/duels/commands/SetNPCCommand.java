@@ -1,6 +1,7 @@
 package me.imfighting.duels.commands;
 
 import me.imfighting.duels.DuelsPlugin;
+import me.imfighting.duels.database.SQLConnection;
 import me.imfighting.duels.managers.LocationsManagers;
 import me.imfighting.duels.managers.NPCManager;
 import me.imfighting.duels.npc.NPCOptions;
@@ -97,29 +98,13 @@ public class SetNPCCommand implements CommandExecutor {
     private void setLocationNPC(Player player, String minigame) {
 
         if (minigame == "soup") {
-            locations.set("NPC.Soup.World", player.getLocation().getWorld().getName());
-            locations.set("NPC.Soup.X", player.getLocation().getX());
-            locations.set("NPC.Soup.Y", player.getLocation().getY());
-            locations.set("NPC.Soup.Z", player.getLocation().getZ());
-            locations.save();
+            SQLConnection.setLocation(player, "soup");
         } else if (minigame == "bridge") {
-            locations.set("NPC.Bridge.World", player.getLocation().getWorld().getName());
-            locations.set("NPC.Bridge.X", player.getLocation().getX());
-            locations.set("NPC.Bridge.Y", player.getLocation().getY());
-            locations.set("NPC.Bridge.Z", player.getLocation().getZ());
-            locations.save();
+            SQLConnection.setLocation(player, "bridge");
         } else if (minigame == "gladiator") {
-            locations.set("NPC.Gladiator.World", player.getLocation().getWorld().getName());
-            locations.set("NPC.Gladiator.X", player.getLocation().getX());
-            locations.set("NPC.Gladiator.Y", player.getLocation().getY());
-            locations.set("NPC.Gladiator.Z", player.getLocation().getZ());
-            locations.save();
+            SQLConnection.setLocation(player, "gladiator");
         } else if (minigame == "gapple") {
-            locations.set("NPC.Gapple.World", player.getLocation().getWorld().getName());
-            locations.set("NPC.Gapple.X", player.getLocation().getX());
-            locations.set("NPC.Gapple.Y", player.getLocation().getY());
-            locations.set("NPC.Gapple.Z", player.getLocation().getZ());
-            locations.save();
+            SQLConnection.setLocation(player, "gapple");
         }
     }
 

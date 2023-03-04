@@ -2,6 +2,7 @@ package me.imfighting.duels;
 
 import me.imfighting.duels.commands.SetLobbyCommand;
 import me.imfighting.duels.commands.SetNPCCommand;
+import me.imfighting.duels.database.SQLConnection;
 import me.imfighting.duels.listeners.LoadListeners;
 import me.imfighting.duels.managers.NPCManager;
 import me.imfighting.duels.util.ConfigUtil;
@@ -35,6 +36,8 @@ public final class DuelsPlugin extends JavaPlugin {
 
         this.npcManager = new NPCManager(this, USE_REFLECTION);
 
+        SQLConnection.openConnection();
+
         Bukkit.getPluginManager().registerEvents(new LoadListeners(), this);
 
         getCommand("setlobby").setExecutor(new SetLobbyCommand());
@@ -46,7 +49,7 @@ public final class DuelsPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         npcManager.deleteAllNPCs();
-
+        SQLConnection.closeConnection();
     }
 
     public static DuelsPlugin getPlugin() {

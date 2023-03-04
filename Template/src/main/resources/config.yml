@@ -30,7 +30,7 @@ Messages:
 
   # SetNPC
   sintaxe-setnpc: '&cSintaxe incorreta! Utilize /setnpc <minigame>'
-  sucess-setnpc: '&aVocê setou com sucesso o NPC. Reinicie o servidor para fazer efeito nas mudanças.'
+  sucess-setnpc: '&aVocê setou com sucesso o NPC.'
   error-setnpc: '&cEste minigame não existe.'
 
   #SetArena

@@ -26,10 +26,10 @@ public class SetArenaCommand implements CommandExecutor {
         }
 
         if (strings.length == 1) {
-            
+            if (strings[0].equalsIgnoreCase("pos1")) {
+
+            }
         }
-
-
         return false;
     }
 }

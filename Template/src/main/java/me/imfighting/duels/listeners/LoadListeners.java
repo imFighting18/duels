@@ -2,6 +2,7 @@ package me.imfighting.duels.listeners;
 
 import jdk.nashorn.internal.runtime.regexp.joni.Config;
 import me.imfighting.duels.DuelsPlugin;
+import me.imfighting.duels.database.SQLConnection;
 import me.imfighting.duels.managers.LocationsManagers;
 import me.imfighting.duels.managers.NPCManager;
 import me.imfighting.duels.managers.PlayerManager;
@@ -10,19 +11,20 @@ import me.imfighting.duels.npc.NPCInteractionEvent;
 import me.imfighting.duels.npc.NPCOptions;
 import me.imfighting.duels.npc.NPCs;
 import me.imfighting.duels.util.ConfigUtil;
+import net.minecraft.server.v1_8_R3.EnumParticle;
+import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -44,68 +46,68 @@ public class LoadListeners implements Listener {
 
         PlayerManager.updatePlayer(player);
 
-        if (sectionLocations.contains("Soup")) {
+        if (SQLConnection.containsNPC("soup")) {
             NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
                     .name("§bSopa")
                     .hideNametag(false)
                     .texture(sectionSkins.getString("Sopa.texture"))
                     .signature(sectionSkins.getString("Sopa.signature"))
                     .location(new Location(
-                            Bukkit.getWorld(sectionLocations.getString("Soup.World")),
-                            sectionLocations.getDouble("Soup.X"),
-                            sectionLocations.getDouble("Soup.Y"),
-                            sectionLocations.getDouble("Soup.Z")
+                            Bukkit.getWorld(SQLConnection.getLocationNPCWorld("soup")),
+                            SQLConnection.getLocationNPC("soup", "x"),
+                            SQLConnection.getLocationNPC("soup", "y"),
+                            SQLConnection.getLocationNPC("soup", "z")
                     ))
                     .build()
             );
             npc.showTo(player);
         }
 
-        if (sectionLocations.contains("Bridge")) {
+        if (SQLConnection.containsNPC("bridge")) {
             NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
                     .name("§bThe bridge")
                     .hideNametag(false)
                     .texture(sectionSkins.getString("Bridge.texture"))
                     .signature(sectionSkins.getString("Bridge.signature"))
                     .location(new Location(
-                            Bukkit.getWorld(sectionLocations.getString("Bridge.World")),
-                            sectionLocations.getDouble("Bridge.X"),
-                            sectionLocations.getDouble("Bridge.Y"),
-                            sectionLocations.getDouble("Bridge.Z")
+                            Bukkit.getWorld(SQLConnection.getLocationNPCWorld("bridge")),
+                            SQLConnection.getLocationNPC("bridge", "x"),
+                            SQLConnection.getLocationNPC("bridge", "y"),
+                            SQLConnection.getLocationNPC("bridge", "z")
                     ))
                     .build()
             );
             npc.showTo(player);
         }
 
-        if (sectionLocations.contains("Gladiator")) {
+        if (SQLConnection.containsNPC("gladiator")) {
             NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
                     .name("§bGladiator")
                     .hideNametag(false)
                     .texture(sectionSkins.getString("Gladiator.texture"))
                     .signature(sectionSkins.getString("Gladiator.signature"))
                     .location(new Location(
-                            Bukkit.getWorld(sectionLocations.getString("Gladiator.World")),
-                            sectionLocations.getDouble("Gladiator.X"),
-                            sectionLocations.getDouble("Gladiator.Y"),
-                            sectionLocations.getDouble("Gladiator.Z")
+                            Bukkit.getWorld(SQLConnection.getLocationNPCWorld("gladiator")),
+                            SQLConnection.getLocationNPC("gladiator", "x"),
+                            SQLConnection.getLocationNPC("gladiator", "y"),
+                            SQLConnection.getLocationNPC("gladiator", "z")
                     ))
                     .build()
             );
             npc.showTo(player);
         }
 
-        if (sectionLocations.contains("Gapple")) {
+        if (SQLConnection.containsNPC("gapple")) {
             NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
                     .name("§bGapple")
                     .hideNametag(false)
                     .texture(sectionSkins.getString("Gapple.texture"))
                     .signature(sectionSkins.getString("Gapple.signature"))
                     .location(new Location(
-                            Bukkit.getWorld(sectionLocations.getString("Gapple.World")),
-                            sectionLocations.getDouble("Gapple.X"),
-                            sectionLocations.getDouble("Gapple.Y"),
-                            sectionLocations.getDouble("Gapple.Z")
+                            Bukkit.getWorld(SQLConnection.getLocationNPCWorld("gapple")),
+                            SQLConnection.getLocationNPC("gapple", "x"),
+                            SQLConnection.getLocationNPC("gapple", "y"),
+                            SQLConnection.getLocationNPC("gapple", "z")
                     ))
                     .build()
             );
@@ -135,6 +137,13 @@ public class LoadListeners implements Listener {
             Player player = e.getEntity();
             PlayerManager.updatePlayer(player);
             e.setDeathMessage(null);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerPortal(PlayerPortalEvent event) {
+        if (event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
+            event.setCancelled(true);
         }
     }
 
