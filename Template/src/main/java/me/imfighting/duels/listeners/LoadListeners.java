@@ -17,6 +17,7 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.WorldCreator;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
@@ -27,6 +28,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -117,6 +119,41 @@ public class LoadListeners implements Listener {
         }
 
 
+        if (SQLConnection.containsNPCPlay("soup")) {
+            NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
+                    .name("§a§lSopa 1v1")
+                    .hideNametag(false)
+                    .texture(sectionSkins.getString("Soup-Lobby.texture"))
+                    .signature(sectionSkins.getString("Soup-Lobby.signature"))
+                    .location(new Location(
+                            Bukkit.getWorld(SQLConnection.getLocationNPCPlayWorld("soup")),
+                            SQLConnection.getLocationNPCPlay("soup", "x"),
+                            SQLConnection.getLocationNPCPlay("soup", "y"),
+                            SQLConnection.getLocationNPCPlay("soup", "z")
+                    ))
+                    .build()
+            );
+            npc.showTo(player);
+        }
+
+        if (SQLConnection.containsNPCPlay("gladiator")) {
+            NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
+                    .name("§a§lGladiator 1v1")
+                    .hideNametag(false)
+                    .texture(sectionSkins.getString("Gladiator-Lobby.texture"))
+                    .signature(sectionSkins.getString("Gladiator-Lobby.signature"))
+                    .location(new Location(
+                            Bukkit.getWorld(SQLConnection.getLocationNPCPlayWorld("gladiator")),
+                            SQLConnection.getLocationNPCPlay("gladiator", "x"),
+                            SQLConnection.getLocationNPCPlay("gladiator", "y"),
+                            SQLConnection.getLocationNPCPlay("gladiator", "z")
+                    ))
+                    .build()
+            );
+            npc.showTo(player);
+        }
+
+
     }
 
     @EventHandler
@@ -151,6 +188,11 @@ public class LoadListeners implements Listener {
 
     @EventHandler
     public void onPlayerFoodLevelChange(FoodLevelChangeEvent e) {
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onWeatherChange(WeatherChangeEvent e) {
         e.setCancelled(true);
     }
 

@@ -1,6 +1,7 @@
 package me.imfighting.duels.commands;
 
 import me.imfighting.duels.DuelsPlugin;
+import me.imfighting.duels.database.SQLConnection;
 import me.imfighting.duels.npc.NPCOptions;
 import me.imfighting.duels.npc.NPCs;
 import me.imfighting.duels.util.ConfigUtil;
@@ -38,7 +39,7 @@ public class SetNPCGameCommand implements CommandExecutor {
         } else if (strings.length == 1) {
             if (strings[0].equalsIgnoreCase("soup")) {
                 NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
-                        .name("§b§lJogar")
+                        .name("§a§lSopa 1v1")
                         .hideNametag(false)
                         .texture(sectionSkins.getString("Soup-Lobby.texture"))
                         .signature(sectionSkins.getString("Soup-Lobby.signature"))
@@ -46,9 +47,34 @@ public class SetNPCGameCommand implements CommandExecutor {
                         .build()
                 );
                 npc.showTo(player);
+                setLocationNPC(player, "soup");
+                player.sendMessage("");
+            } else if (strings[0].equalsIgnoreCase("gladiator")) {
+                NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
+                        .name("§a§lGladiator 1v1")
+                        .hideNametag(false)
+                        .texture(sectionSkins.getString("Gladiator-Lobby.texture"))
+                        .signature(sectionSkins.getString("Gladiator-Lobby.signature"))
+                        .location(player.getLocation())
+                        .build()
+                );
+                npc.showTo(player);
+                setLocationNPC(player, "gladiator");
+                player.sendMessage("");
+            } else {
+                player.sendMessage(section.getString("noexists-setnpcgame").replace('&', '§'));
             }
         }
 
         return false;
+    }
+
+    private void setLocationNPC(Player player, String minigame) {
+
+        if (minigame == "soup") {
+            SQLConnection.setLocationPlay(player, "soup");
+        } else if (minigame == "gladiator") {
+            SQLConnection.setLocationPlay(player, "gladiator");
+        }
     }
 }
