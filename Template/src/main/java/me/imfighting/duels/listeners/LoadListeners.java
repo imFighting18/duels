@@ -6,6 +6,7 @@ import me.imfighting.duels.database.SQLConnection;
 import me.imfighting.duels.managers.LocationsManagers;
 import me.imfighting.duels.managers.NPCManager;
 import me.imfighting.duels.managers.PlayerManager;
+import me.imfighting.duels.managers.ScoreboardManager;
 import me.imfighting.duels.npc.NPCClickAction;
 import me.imfighting.duels.npc.NPCInteractionEvent;
 import me.imfighting.duels.npc.NPCOptions;
@@ -23,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
@@ -35,7 +37,7 @@ public class LoadListeners implements Listener {
     final ConfigUtil config = DuelsPlugin.getPlugin().getConfig();
     final ConfigUtil locations = DuelsPlugin.getPlugin().getLocations();
     final ConfigurationSection section = config.getConfigurationSection("item-desafiar");
-    final ConfigurationSection sectionLocations = locations.getConfigurationSection("NPC");
+    final ConfigurationSection sectionLobbySoup = locations.getConfigurationSection("Soup");
     final ConfigurationSection sectionSkins = config.getConfigurationSection("Skins");
 
     @EventHandler
@@ -148,15 +150,32 @@ public class LoadListeners implements Listener {
     }
 
     @EventHandler
+    public void onPlayerFoodLevelChange(FoodLevelChangeEvent e) {
+        e.setCancelled(true);
+    }
+
+
+    @EventHandler
     private void onNPCClick(NPCInteractionEvent event) {
         NPCs clicked = event.getClicked();
+        Player player = event.getPlayer();
 
         if (clicked.getName().equalsIgnoreCase("§bSopa")) {
             if (event.getClickAction() == NPCClickAction.ATTACK) return;
-            event.getPlayer().sendMessage("Teste");
-        } else {
-            event.getPlayer().sendMessage("<" + clicked.getName() + "> Sorry, I don't think you're looking for me.");
+            joinSoupLobby(player);
+
         }
+    }
+
+    private void joinSoupLobby(Player player) {
+        player.teleport(new Location(Bukkit.getWorld(sectionLobbySoup.getString("World")),
+                sectionLobbySoup.getDouble("X"),
+                sectionLobbySoup.getDouble("Y"),
+                sectionLobbySoup.getDouble("Z"),
+                (float) sectionLobbySoup.getDouble("Yaw"),
+                (float) sectionLobbySoup.getDouble("Pitch")));
+        player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+        ScoreboardManager.updateScoreboardLobbySoup(player);
     }
 
 }

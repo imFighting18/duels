@@ -4,3 +4,4 @@ main: me.imfighting.duels.DuelsPlugin
 commands:
   setlobby:
   setnpc:
+  setnpcgame:

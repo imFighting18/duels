@@ -53,4 +53,37 @@ public class ScoreboardManager {
         player.setScoreboard(scoreboard);
 
     }
+
+    public static void updateScoreboardLobbySoup(Player player) {
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        Objective objective = scoreboard.registerNewObjective("test", "dummy");
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        objective.setDisplayName("§b§lSOPA");
+
+        Score space1 = objective.getScore("§a");
+        space1.setScore(8);
+
+        Score wins = objective.getScore("  §fVitórias: §7...");
+        wins.setScore(7);
+
+        Score losses = objective.getScore("  §fDerrotas: §7...");
+        losses.setScore(6);
+
+        Score space2 = objective.getScore("§b");
+        space2.setScore(5);
+
+        Score winstreak = objective.getScore("  §fWinstreak: §a...");
+        winstreak.setScore(4);
+
+        Score ranking = objective.getScore("  §fRanking: §7...");
+        ranking.setScore(3);
+
+        Score space3 = objective.getScore("§c");
+        space3.setScore(2);
+
+        Score website = objective.getScore(lines.get(9));
+        website.setScore(1);
+
+        player.setScoreboard(scoreboard);
+    }
 }
