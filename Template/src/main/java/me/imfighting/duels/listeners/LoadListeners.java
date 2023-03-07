@@ -3,10 +3,7 @@ package me.imfighting.duels.listeners;
 import jdk.nashorn.internal.runtime.regexp.joni.Config;
 import me.imfighting.duels.DuelsPlugin;
 import me.imfighting.duels.database.SQLConnection;
-import me.imfighting.duels.managers.LocationsManagers;
-import me.imfighting.duels.managers.NPCManager;
-import me.imfighting.duels.managers.PlayerManager;
-import me.imfighting.duels.managers.ScoreboardManager;
+import me.imfighting.duels.managers.*;
 import me.imfighting.duels.npc.NPCClickAction;
 import me.imfighting.duels.npc.NPCInteractionEvent;
 import me.imfighting.duels.npc.NPCOptions;
@@ -231,7 +228,8 @@ public class LoadListeners implements Listener {
         if (clicked.getName().equalsIgnoreCase("§bSopa")) {
             if (event.getClickAction() == NPCClickAction.ATTACK) return;
             joinSoupLobby(player);
-
+        } else if (clicked.getName().equalsIgnoreCase("§a§lSopa 1v1")) {
+            GameManager.sendGame(player, "soup");
         }
     }
 
@@ -245,5 +243,4 @@ public class LoadListeners implements Listener {
         player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
         ScoreboardManager.updateScoreboardLobbySoup(player);
     }
-
 }

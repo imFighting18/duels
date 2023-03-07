@@ -38,6 +38,12 @@ public class SetNPCGameCommand implements CommandExecutor {
             return false;
         } else if (strings.length == 1) {
             if (strings[0].equalsIgnoreCase("soup")) {
+
+                if (!player.getWorld().getName().equalsIgnoreCase("soup_lobby")) {
+                    player.sendMessage("§cO nome do mundo precisa ser 'soup_lobby'.");
+                    return false;
+                }
+
                 NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
                         .name("§a§lSopa 1v1")
                         .hideNametag(false)
@@ -48,8 +54,14 @@ public class SetNPCGameCommand implements CommandExecutor {
                 );
                 npc.showTo(player);
                 setLocationNPC(player, "soup");
-                player.sendMessage("");
+                player.sendMessage(section.getString("sucess-setnpcgame"));
             } else if (strings[0].equalsIgnoreCase("gladiator")) {
+
+                if (!player.getWorld().getName().equalsIgnoreCase("gladiator_lobby")) {
+                    player.sendMessage("§cO nome do mundo precisa ser 'gladiator_lobby'.");
+                    return false;
+                }
+
                 NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
                         .name("§a§lGladiator 1v1")
                         .hideNametag(false)
@@ -60,7 +72,7 @@ public class SetNPCGameCommand implements CommandExecutor {
                 );
                 npc.showTo(player);
                 setLocationNPC(player, "gladiator");
-                player.sendMessage("");
+                player.sendMessage(section.getString("sucess-setnpcgame"));
             } else {
                 player.sendMessage(section.getString("noexists-setnpcgame").replace('&', '§'));
             }

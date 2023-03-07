@@ -1,5 +1,6 @@
 package me.imfighting.duels;
 
+import me.imfighting.duels.commands.SetArenaCommand;
 import me.imfighting.duels.commands.SetLobbyCommand;
 import me.imfighting.duels.commands.SetNPCCommand;
 import me.imfighting.duels.commands.SetNPCGameCommand;
@@ -28,6 +29,8 @@ public final class DuelsPlugin extends JavaPlugin {
     private static DuelsPlugin plugin;
     private ConfigUtil config;
     private ConfigUtil locations;
+    private ConfigUtil arenas;
+
     private ViewFrame view;
     private NPCManager npcManager;
 
@@ -37,6 +40,7 @@ public final class DuelsPlugin extends JavaPlugin {
     public void onLoad() {
         config = new ConfigUtil(this, "config.yml");
         locations = new ConfigUtil(this, "locations.yml");
+        arenas = new ConfigUtil(this, "arenas.yml");
     }
 
     @Override
@@ -49,9 +53,15 @@ public final class DuelsPlugin extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new LoadListeners(), this);
 
+        if(!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")){
+            getLogger().warning("Dependencia ProtocolLib nao encontrada.");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+
         getCommand("setlobby").setExecutor(new SetLobbyCommand());
         getCommand("setnpc").setExecutor(new SetNPCCommand());
         getCommand("setnpcgame").setExecutor(new SetNPCGameCommand());
+        getCommand("setarena").setExecutor(new SetArenaCommand());
 
         removeMobs();
         alwaysDay();
@@ -102,6 +112,10 @@ public final class DuelsPlugin extends JavaPlugin {
 
     public ConfigUtil getLocations() {
         return locations;
+    }
+
+    public ConfigUtil getArenas() {
+        return arenas;
     }
 
     public NPCManager getNpcManager() {
