@@ -31,9 +31,6 @@ public final class DuelsPlugin extends JavaPlugin {
     private ViewFrame view;
     private NPCManager npcManager;
 
-    final ConfigurationSection sectionSkins = getConfig().getConfigurationSection("Skins");
-
-
     private final boolean USE_REFLECTION = false;
 
     @Override

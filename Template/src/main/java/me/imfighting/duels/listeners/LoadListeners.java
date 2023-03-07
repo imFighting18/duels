@@ -13,14 +13,13 @@ import me.imfighting.duels.npc.NPCOptions;
 import me.imfighting.duels.npc.NPCs;
 import me.imfighting.duels.util.ConfigUtil;
 import net.minecraft.server.v1_8_R3.EnumParticle;
+import net.minecraft.server.v1_8_R3.NPC;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.WorldCreator;
+import org.bukkit.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,6 +28,8 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
+import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -118,7 +119,6 @@ public class LoadListeners implements Listener {
             npc.showTo(player);
         }
 
-
         if (SQLConnection.containsNPCPlay("soup")) {
             NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
                     .name("§a§lSopa 1v1")
@@ -136,7 +136,34 @@ public class LoadListeners implements Listener {
             npc.showTo(player);
         }
 
-        if (SQLConnection.containsNPCPlay("gladiator")) {
+
+    }
+
+    @EventHandler
+    public void onWorldLoad(PlayerChangedWorldEvent event) {
+
+        Player player = event.getPlayer();
+
+            if (SQLConnection.containsNPCPlay("soup") &&
+                    player.getWorld().getName().equalsIgnoreCase(SQLConnection.getLocationNPCPlayWorld("soup"))) {
+                NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
+                        .name("§a§lSopa 1v1")
+                        .hideNametag(false)
+                        .texture(sectionSkins.getString("Soup-Lobby.texture"))
+                        .signature(sectionSkins.getString("Soup-Lobby.signature"))
+                        .location(new Location(
+                                Bukkit.getWorld(SQLConnection.getLocationNPCPlayWorld("soup")),
+                                SQLConnection.getLocationNPCPlay("soup", "x"),
+                                SQLConnection.getLocationNPCPlay("soup", "y"),
+                                SQLConnection.getLocationNPCPlay("soup", "z")
+                        ))
+                        .build()
+                );
+                npc.showTo(player);
+            }
+
+        if (SQLConnection.containsNPCPlay("gladiator") &&
+                player.getWorld().getName().equalsIgnoreCase(SQLConnection.getLocationNPCPlayWorld("soup"))) {
             NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
                     .name("§a§lGladiator 1v1")
                     .hideNametag(false)
@@ -152,7 +179,6 @@ public class LoadListeners implements Listener {
             );
             npc.showTo(player);
         }
-
 
     }
 
