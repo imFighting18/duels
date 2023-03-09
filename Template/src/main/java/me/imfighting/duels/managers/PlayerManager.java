@@ -17,6 +17,12 @@ public class PlayerManager {
 
     public static void updatePlayer(Player player) {
         player.getInventory().clear();
+
+        player.getInventory().setHelmet(null);
+        player.getInventory().setChestplate(null);
+        player.getInventory().setLeggings(null);
+        player.getInventory().setBoots(null);
+
         player.getInventory().setItem(desafiar.getInt("slot"), builder.build());
         player.setHealth(20);
         player.setFoodLevel(20);

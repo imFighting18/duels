@@ -34,7 +34,7 @@ Messages:
   error-setnpc: '&cEste minigame não existe.'
 
   #SetArena
-  sintaxe-setarena: '&cDigite /setarena <pos1, pos2> <minigame>'
+  sintaxe-setarena: '&cDigite /setarena <minigame>'
   sucess-setarena: '&aVocê setou uma posição do game.'
 
   #SetNPCGame

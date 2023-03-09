@@ -6,6 +6,7 @@ import me.imfighting.duels.commands.SetNPCCommand;
 import me.imfighting.duels.commands.SetNPCGameCommand;
 import me.imfighting.duels.database.SQLConnection;
 import me.imfighting.duels.listeners.LoadListeners;
+import me.imfighting.duels.managers.ArenaManager;
 import me.imfighting.duels.managers.NPCManager;
 import me.imfighting.duels.npc.NPCOptions;
 import me.imfighting.duels.npc.NPCs;
@@ -27,6 +28,7 @@ import java.nio.channels.Channel;
 public final class DuelsPlugin extends JavaPlugin {
 
     private static DuelsPlugin plugin;
+    private ArenaManager arenaManager;
     private ConfigUtil config;
     private ConfigUtil locations;
     private ConfigUtil arenas;
@@ -48,6 +50,9 @@ public final class DuelsPlugin extends JavaPlugin {
         plugin = this;
 
         this.npcManager = new NPCManager(this, USE_REFLECTION);
+
+        arenaManager = new ArenaManager(this);
+
 
         SQLConnection.openConnection();
 
@@ -120,5 +125,9 @@ public final class DuelsPlugin extends JavaPlugin {
 
     public NPCManager getNpcManager() {
         return npcManager;
+    }
+
+    public ArenaManager getArenaManager() {
+        return arenaManager;
     }
 }

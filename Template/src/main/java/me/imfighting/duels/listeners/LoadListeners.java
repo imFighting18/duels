@@ -3,6 +3,7 @@ package me.imfighting.duels.listeners;
 import jdk.nashorn.internal.runtime.regexp.joni.Config;
 import me.imfighting.duels.DuelsPlugin;
 import me.imfighting.duels.database.SQLConnection;
+import me.imfighting.duels.instance.Arena;
 import me.imfighting.duels.managers.*;
 import me.imfighting.duels.npc.NPCClickAction;
 import me.imfighting.duels.npc.NPCInteractionEvent;
@@ -35,9 +36,9 @@ import java.util.List;
 public class LoadListeners implements Listener {
 
     final ConfigUtil config = DuelsPlugin.getPlugin().getConfig();
-    final ConfigUtil locations = DuelsPlugin.getPlugin().getLocations();
+    static final ConfigUtil locations = DuelsPlugin.getPlugin().getLocations();
     final ConfigurationSection section = config.getConfigurationSection("item-desafiar");
-    final ConfigurationSection sectionLobbySoup = locations.getConfigurationSection("Soup");
+    static final ConfigurationSection sectionLobbySoup = locations.getConfigurationSection("Soup");
     final ConfigurationSection sectionSkins = config.getConfigurationSection("Skins");
 
     @EventHandler
@@ -182,6 +183,12 @@ public class LoadListeners implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
         e.setQuitMessage(null);
+
+        Arena arena = DuelsPlugin.getPlugin().getArenaManager().getArena(e.getPlayer());
+        if (arena != null) {
+            arena.removePlayer(e.getPlayer());
+        }
+
     }
 
     @EventHandler
@@ -229,11 +236,11 @@ public class LoadListeners implements Listener {
             if (event.getClickAction() == NPCClickAction.ATTACK) return;
             joinSoupLobby(player);
         } else if (clicked.getName().equalsIgnoreCase("§a§lSopa 1v1")) {
-            GameManager.sendGame(player, "soup");
+            GameManager.sendGame(player, "soup", 0);
         }
     }
 
-    private void joinSoupLobby(Player player) {
+    public static void joinSoupLobby(Player player) {
         player.teleport(new Location(Bukkit.getWorld(sectionLobbySoup.getString("World")),
                 sectionLobbySoup.getDouble("X"),
                 sectionLobbySoup.getDouble("Y"),

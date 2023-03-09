@@ -29,81 +29,34 @@ public class SetArenaCommand implements CommandExecutor {
             return false;
         }
 
-        if (strings.length < 2) {
+        if (strings.length < 1) {
             player.sendMessage(section.getString("sintaxe-setarena").replace('&', '§'));
             return false;
         }
 
-        // /setarena pos1 soup
+        if (strings.length == 1) {
+            if (strings[0].equalsIgnoreCase("soup")) {
 
-        if (strings.length == 2) {
-            if (strings[1].equalsIgnoreCase("soup")) {
+                if (!player.getWorld().getName().contains("soup_")) {
+                    player.sendMessage("O mundo precisa começar com 'soup_'.");
+                    return false;
+                }
 
-                if (strings[0].equalsIgnoreCase("pos1")) {
-                    if (!arenas.contains("games-numbers")) {
-                        arenas.set("games-numbers", 1);
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-1" + ".World",
-                                player.getWorld().getName());
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-1" + ".X",
-                                player.getLocation().getX());
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-1" + ".Y",
-                                player.getLocation().getY());
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-1" + ".Z",
-                                player.getLocation().getZ());
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-1" + ".Yaw",
-                                player.getLocation().getYaw());
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-1" + ".Pitch",
-                                player.getLocation().getPitch());
-                        arenas.save();
-                    } else {
-                        arenas.set("games-numbers", arenas.getInt("games-numbers") + 1);
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-1" + ".World",
-                                player.getWorld().getName());
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-1" + ".X",
-                                player.getLocation().getX());
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-1" + ".Y",
-                                player.getLocation().getY());
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-1" + ".Z",
-                                player.getLocation().getZ());
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-1" + ".Yaw",
-                                player.getLocation().getYaw());
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-1" + ".Pitch",
-                                player.getLocation().getPitch());
-                        arenas.save();
-                    }
+                if (!arenas.contains("game-numbers")) {
+                    arenas.set("game-numbers", 0);
+                    arenas.set("arenas." + arenas.getInt("game-numbers") + ".World", player.getWorld().getName());
+                    arenas.set("arenas." + arenas.getInt("game-numbers") + ".X", player.getLocation().getX());
+                    arenas.set("arenas." + arenas.getInt("game-numbers") + ".Y", player.getLocation().getY());
+                    arenas.set("arenas." + arenas.getInt("game-numbers") + ".Z", player.getLocation().getZ());
+                    arenas.save();
                     player.sendMessage(section.getString("sucess-setarena").replace('&', '§'));
-                } else if (strings[0].equalsIgnoreCase("pos2")) {
-                    if (!arenas.contains("games-numbers")) {
-                        arenas.set("games-numbers", 1);
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-2" + ".World",
-                                player.getWorld().getName());
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-2" + ".X",
-                                player.getLocation().getX());
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-2" + ".Y",
-                                player.getLocation().getY());
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-2" + ".Z",
-                                player.getLocation().getZ());
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-2" + ".Yaw",
-                                player.getLocation().getYaw());
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-2" + ".Pitch",
-                                player.getLocation().getPitch());
-                        arenas.save();
-                    } else {
-                        arenas.set("games-numbers", arenas.getInt("games-numbers") + 1);
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-2" + ".World",
-                                player.getWorld().getName());
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-2" + ".X",
-                                player.getLocation().getX());
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-2" + ".Y",
-                                player.getLocation().getY());
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-2" + ".Z",
-                                player.getLocation().getZ());
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-2" + ".Yaw",
-                                player.getLocation().getYaw());
-                        arenas.set("Soup-" + arenas.getInt("games-numbers") + "-2" + ".Pitch",
-                                player.getLocation().getPitch());
-                        arenas.save();
-                    }
+                } else {
+                    arenas.set("game-numbers", arenas.getInt("game-numbers") + 1);
+                    arenas.set("arenas." + arenas.getInt("game-numbers") + ".World", player.getWorld().getName());
+                    arenas.set("arenas." + arenas.getInt("game-numbers") + ".X", player.getLocation().getX());
+                    arenas.set("arenas." + arenas.getInt("game-numbers") + ".Y", player.getLocation().getY());
+                    arenas.set("arenas." + arenas.getInt("game-numbers") + ".Z", player.getLocation().getZ());
+                    arenas.save();
                     player.sendMessage(section.getString("sucess-setarena").replace('&', '§'));
                 }
             }
