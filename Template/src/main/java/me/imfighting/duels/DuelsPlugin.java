@@ -1,6 +1,5 @@
 package me.imfighting.duels;
 
-import me.imfighting.duels.commands.SetArenaCommand;
 import me.imfighting.duels.commands.SetLobbyCommand;
 import me.imfighting.duels.commands.SetNPCCommand;
 import me.imfighting.duels.commands.SetNPCGameCommand;
@@ -8,22 +7,14 @@ import me.imfighting.duels.database.SQLConnection;
 import me.imfighting.duels.listeners.LoadListeners;
 import me.imfighting.duels.managers.ArenaManager;
 import me.imfighting.duels.managers.NPCManager;
-import me.imfighting.duels.npc.NPCOptions;
-import me.imfighting.duels.npc.NPCs;
 import me.imfighting.duels.util.ConfigUtil;
 import me.saiintbrisson.minecraft.ViewFrame;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.WorldCreator;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.nio.channels.Channel;
 
 public final class DuelsPlugin extends JavaPlugin {
 
@@ -31,6 +22,7 @@ public final class DuelsPlugin extends JavaPlugin {
     private ArenaManager arenaManager;
     private ConfigUtil config;
     private ConfigUtil locations;
+    private ConfigUtil positions;
     private ConfigUtil arenas;
 
     private ViewFrame view;
@@ -43,6 +35,7 @@ public final class DuelsPlugin extends JavaPlugin {
         config = new ConfigUtil(this, "config.yml");
         locations = new ConfigUtil(this, "locations.yml");
         arenas = new ConfigUtil(this, "arenas.yml");
+        positions = new ConfigUtil(this, "positions.yml");
     }
 
     @Override
@@ -66,7 +59,6 @@ public final class DuelsPlugin extends JavaPlugin {
         getCommand("setlobby").setExecutor(new SetLobbyCommand());
         getCommand("setnpc").setExecutor(new SetNPCCommand());
         getCommand("setnpcgame").setExecutor(new SetNPCGameCommand());
-        getCommand("setarena").setExecutor(new SetArenaCommand());
 
         removeMobs();
         alwaysDay();
@@ -121,6 +113,10 @@ public final class DuelsPlugin extends JavaPlugin {
 
     public ConfigUtil getArenas() {
         return arenas;
+    }
+
+    public ConfigUtil getPositions() {
+        return positions;
     }
 
     public NPCManager getNpcManager() {

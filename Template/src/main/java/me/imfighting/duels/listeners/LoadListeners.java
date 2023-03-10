@@ -2,6 +2,7 @@ package me.imfighting.duels.listeners;
 
 import jdk.nashorn.internal.runtime.regexp.joni.Config;
 import me.imfighting.duels.DuelsPlugin;
+import me.imfighting.duels.GameState;
 import me.imfighting.duels.database.SQLConnection;
 import me.imfighting.duels.instance.Arena;
 import me.imfighting.duels.managers.*;
@@ -21,6 +22,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -48,6 +50,21 @@ public class LoadListeners implements Listener {
         Player player = e.getPlayer();
 
         PlayerManager.updatePlayer(player);
+
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            if (!DuelsPlugin.getPlugin().getArenaManager().getArena(online).getPlayers().contains(online)) {
+                player.hidePlayer(online);
+                online.hidePlayer(player);
+            }
+        }
+
+
+    }
+
+    @EventHandler
+    public void onWorldLoad(PlayerChangedWorldEvent event) {
+
+        Player player = event.getPlayer();
 
         if (SQLConnection.containsNPC("soup")) {
             NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
@@ -134,14 +151,6 @@ public class LoadListeners implements Listener {
             npc.showTo(player);
         }
 
-
-    }
-
-    @EventHandler
-    public void onWorldLoad(PlayerChangedWorldEvent event) {
-
-        Player player = event.getPlayer();
-
             if (SQLConnection.containsNPCPlay("soup") &&
                     player.getWorld().getName().equalsIgnoreCase(SQLConnection.getLocationNPCPlayWorld("soup"))) {
                 NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
@@ -215,6 +224,19 @@ public class LoadListeners implements Listener {
             event.setCancelled(true);
         }
     }
+
+    @EventHandler
+    public void onPlayerHit(EntityDamageByEntityEvent e) {
+        Player player = (Player) e.getEntity();
+
+        e.setCancelled(true);
+
+        if ((DuelsPlugin.getPlugin().getArenaManager().getArena(player) != null) &&
+                DuelsPlugin.getPlugin().getArenaManager().getArena(player).getState() == GameState.LIVE) {
+            e.setCancelled(false);
+        }
+    }
+
 
     @EventHandler
     public void onPlayerFoodLevelChange(FoodLevelChangeEvent e) {

@@ -3,7 +3,12 @@ package me.imfighting.duels.instance;
 import me.imfighting.duels.DuelsPlugin;
 import me.imfighting.duels.GameState;
 import me.imfighting.duels.managers.GameManager;
+import me.imfighting.duels.managers.ScoreboardManager;
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Score;
+
+import java.util.UUID;
 
 public class Countdown extends BukkitRunnable {
 
@@ -30,8 +35,13 @@ public class Countdown extends BukkitRunnable {
             return;
         }
 
-        arena.sendTitle("§a" + countdownSeconds + " segundo" + (countdownSeconds == 1 ? "" : "s"), "irá começar.");
+        for (UUID uuid : arena.getPlayers()) {
+            Bukkit.getPlayer(uuid).setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+            ScoreboardManager.updateScoreboardStartingSoup(Bukkit.getPlayer(uuid));
+            Bukkit.getPlayer(uuid).getScoreboard().getTeam("starting").setSuffix("§a" + countdownSeconds);
+        }
 
+        arena.sendTitle("§a" + countdownSeconds + " segundo" + (countdownSeconds == 1 ? "" : "s"), "irá começar.");
 
         countdownSeconds--;
 

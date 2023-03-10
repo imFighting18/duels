@@ -4,10 +4,14 @@ import me.imfighting.duels.DuelsPlugin;
 import me.imfighting.duels.GameState;
 import me.imfighting.duels.MinigameType;
 import me.imfighting.duels.listeners.LoadListeners;
+import me.imfighting.duels.managers.PlayerManager;
+import me.imfighting.duels.managers.ScoreboardManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import javax.management.ObjectName;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -44,11 +48,12 @@ public class Arena {
     public void reset(boolean kickPlayers) {
 
         if (kickPlayers) {
-
             for (UUID uuid : players) {
                 LoadListeners.joinSoupLobby(Bukkit.getPlayer(uuid));
+                PlayerManager.updatePlayer(Bukkit.getPlayer(uuid));
             }
             players.clear();
+
         }
 
         sendTitle("", "");
@@ -76,6 +81,17 @@ public class Arena {
     public void addPlayer(Player player) {
         players.add(player.getUniqueId());
         player.teleport(spawn);
+        player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+        ScoreboardManager.updateScoreboardWaitingSoup(player);
+
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            if (!players.contains(online)) {
+                player.hidePlayer(online);
+                online.hidePlayer(player);
+                Bukkit.getPlayer(players.get(0)).showPlayer(Bukkit.getPlayer(players.get(1)));
+                Bukkit.getPlayer(players.get(1)).showPlayer(Bukkit.getPlayer(players.get(0)));
+            }
+        }
 
         if (state.equals(GameState.RECRUITING) && players.size() == 2) {
             countdown.start();
@@ -96,7 +112,7 @@ public class Arena {
 
         if (state == GameState.LIVE && players.size() < 2) {
             sendMessage("§cO jogo acabou por ter poucos jogadores.");
-            reset(false);
+            reset(true);
         }
 
 

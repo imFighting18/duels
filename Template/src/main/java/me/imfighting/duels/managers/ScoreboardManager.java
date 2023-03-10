@@ -4,11 +4,10 @@ import me.imfighting.duels.DuelsPlugin;
 import me.imfighting.duels.util.ConfigUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
-import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.*;
 
 import java.util.List;
 
@@ -86,4 +85,207 @@ public class ScoreboardManager {
 
         player.setScoreboard(scoreboard);
     }
+
+    public static void updateScoreboardWaitingSoup(Player player) {
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        Objective objective = scoreboard.registerNewObjective("test", "dummy");
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        objective.setDisplayName("§b§lDUELS");
+
+        Score space3 = objective.getScore("§f");
+        space3.setScore(10);
+
+        Score modo =
+                objective.getScore("  §fModo: §aSopa 1v1");
+        modo.setScore(9);
+
+        Score players =
+                objective.getScore("  §fJogadores: §a" +
+                        DuelsPlugin.getPlugin().getArenaManager().getArena(player).getPlayers().size()
+                        + "/2");
+        players.setScore(8);
+
+        Score space1 = objective.getScore("§a");
+        space1.setScore(7);
+
+        Score waiting = objective.getScore("  §fAguardando...");
+        waiting.setScore(6);
+
+        Score space2 = objective.getScore("§b");
+        space2.setScore(5);
+
+        Score ranking = objective.getScore("  §fRanking: §a...");
+        ranking.setScore(4);
+
+        Score winstreak = objective.getScore("  §fWinstreak: §7...");
+        winstreak.setScore(3);
+
+        Score space4 = objective.getScore("§c");
+        space4.setScore(2);
+
+        Score website = objective.getScore(lines.get(9));
+        website.setScore(1);
+
+        player.setScoreboard(scoreboard);
+    }
+
+    public static void updateScoreboardStartingSoup(Player player) {
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        Objective objective = scoreboard.registerNewObjective("test", "dummy");
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        objective.setDisplayName("§b§lDUELS");
+
+        Score space3 = objective.getScore("§f");
+        space3.setScore(10);
+
+        Score modo =
+                objective.getScore("  §fModo: §aSopa 1v1" +
+                        DuelsPlugin.getPlugin().getArenaManager().getArena(player).getPlayers().size()
+                        + "/2");
+        modo.setScore(9);
+
+        Score players =
+                objective.getScore("  §fJogadores: §a" +
+                        DuelsPlugin.getPlugin().getArenaManager().getArena(player).getPlayers().size()
+                        + "/2");
+        players.setScore(8);
+
+        Score space1 = objective.getScore("§a");
+        space1.setScore(7);
+
+        Team starting = scoreboard.registerNewTeam("starting");
+        starting.addEntry("§e");
+        starting.setPrefix("  §fInicia em: ");
+        starting.setSuffix("§a...");
+        objective.getScore("§e").setScore(6);
+
+        Score space2 = objective.getScore("§b");
+        space2.setScore(5);
+
+        Score ranking = objective.getScore("  §fRanking: §a...");
+        ranking.setScore(4);
+
+        Score winstreak = objective.getScore("  §fWinstreak: §7...");
+        winstreak.setScore(3);
+
+        Score space4 = objective.getScore("§c");
+        space4.setScore(2);
+
+        Score website = objective.getScore(lines.get(9));
+        website.setScore(1);
+
+        player.setScoreboard(scoreboard);
+    }
+
+    public static void updateScoreboardGameSoup(Player player) {
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        Objective objective = scoreboard.registerNewObjective("test", "dummy");
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        objective.setDisplayName("§b§lDUELS");
+
+        Score space3 = objective.getScore("§f");
+        space3.setScore(11);
+
+        Score modo =
+                objective.getScore("  §fModo: §aSopa 1v1");
+        modo.setScore(10);
+
+        Team time = scoreboard.registerNewTeam("time");
+        time.addEntry("§1");
+        time.setPrefix("  §fTempo: ");
+        time.setSuffix("§a...");
+        objective.getScore("§1").setScore(9);
+
+        Score space1 = objective.getScore("§a");
+        space1.setScore(8);
+
+        if (DuelsPlugin.getPlugin().getArenaManager().getArena(player).getPlayers().get(0) != player.getUniqueId()) {
+            Team adv = scoreboard.registerNewTeam("adversario");
+            adv.addEntry("§2");
+            adv.setPrefix("  §c" + Bukkit.getPlayer(DuelsPlugin.getPlugin().getArenaManager().getArena(player).getPlayers().get(0)).getName() + ":");
+
+            CraftPlayer craftPlayer =
+                    (CraftPlayer) Bukkit.getPlayer(DuelsPlugin.getPlugin().getArenaManager().getArena(player).getPlayers().get(0));
+            int ping = craftPlayer.getHandle().ping;
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    adv.setSuffix( "§7" + ping + "ms");
+                }
+            }.runTaskTimer(DuelsPlugin.getPlugin(), 0, 1L);
+
+            objective.getScore("§2").setScore(7);
+
+            Team playerScore = scoreboard.registerNewTeam("player");
+            playerScore.addEntry("§3");
+            playerScore.setPrefix("  §9" + player.getName() + ":");
+
+            CraftPlayer craftPlayerPl = (CraftPlayer) player;
+            int pingPl = craftPlayerPl.getHandle().ping;
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    playerScore.setSuffix(" §7" + pingPl + "ms");
+                }
+            }.runTaskTimer(DuelsPlugin.getPlugin(), 0, 1L);
+
+            objective.getScore("§3").setScore(6);
+
+        }
+
+        if (DuelsPlugin.getPlugin().getArenaManager().getArena(player).getPlayers().get(1) != player.getUniqueId()) {
+            Team adv = scoreboard.registerNewTeam("adversario");
+            adv.addEntry("§2");
+            adv.setPrefix("   §c" + Bukkit.getPlayer(DuelsPlugin.getPlugin().getArenaManager().getArena(player).getPlayers().get(1)).getName() + ":");
+
+            CraftPlayer craftPlayer =
+                    (CraftPlayer) Bukkit.getPlayer(DuelsPlugin.getPlugin().getArenaManager().getArena(player).getPlayers().get(1));
+            int ping = craftPlayer.getHandle().ping;
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    adv.setSuffix(" §7" + ping + "ms");
+                }
+            }.runTaskTimer(DuelsPlugin.getPlugin(), 0, 1L);
+            objective.getScore("§2").setScore(7);
+
+            Team playerScore = scoreboard.registerNewTeam("player");
+            playerScore.addEntry("§3");
+            playerScore.setPrefix("  §9" + player.getName() + ":");
+
+            CraftPlayer craftPlayerPl = (CraftPlayer) player;
+            int pingPl = craftPlayerPl.getHandle().ping;
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    playerScore.setSuffix(" §7" + pingPl + "ms");
+                }
+            }.runTaskTimer(DuelsPlugin.getPlugin(), 0, 1L);
+
+            objective.getScore("§3").setScore(6);
+
+        }
+
+        Score space2 = objective.getScore("§b");
+        space2.setScore(5);
+
+        Score ranking = objective.getScore("  §fRanking: §a...");
+        ranking.setScore(4);
+
+        Score winstreak = objective.getScore("  §fWinstreak: §7...");
+        winstreak.setScore(3);
+
+        Score space4 = objective.getScore("§c");
+        space4.setScore(2);
+
+        Score website = objective.getScore(lines.get(9));
+        website.setScore(1);
+
+        player.setScoreboard(scoreboard);
+    }
+
 }

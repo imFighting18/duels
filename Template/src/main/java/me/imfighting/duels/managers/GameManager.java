@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
@@ -23,10 +24,10 @@ public class GameManager {
             if (arena.getState() == GameState.RECRUITING) {
                 arena.addPlayer(player);
                 arena.setMinigameType(MinigameType.SOUP);
+
+            } else {
+                player.sendMessage("§cVocê não pode entrar nesta arena agora.");
             }
-        } else {
-            player.sendMessage("§cVocê não pode entrar nesta arena agora.");
         }
     }
-
 }
