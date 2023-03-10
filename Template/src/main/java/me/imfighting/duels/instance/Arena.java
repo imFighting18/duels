@@ -49,8 +49,7 @@ public class Arena {
 
         if (kickPlayers) {
             for (UUID uuid : players) {
-                LoadListeners.joinSoupLobby(Bukkit.getPlayer(uuid));
-                PlayerManager.updatePlayer(Bukkit.getPlayer(uuid));
+                PlayerManager.updatePlayerOnReset(Bukkit.getPlayer(uuid));
             }
             players.clear();
 
@@ -58,6 +57,7 @@ public class Arena {
 
         sendTitle("", "");
         state = GameState.RECRUITING;
+        minigameType = MinigameType.NONE;
         countdown.cancel();
         countdown = new Countdown(duelsPlugin, this);
         game = new Game(this);
@@ -83,6 +83,7 @@ public class Arena {
         player.teleport(spawn);
         player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
         ScoreboardManager.updateScoreboardWaitingSoup(player);
+        sendMessage("§7" + player.getName() + " §eentrou no jogo. §a(" + getPlayers().size() + "/2)");
 
         for (Player online : Bukkit.getOnlinePlayers()) {
             if (!players.contains(online)) {
@@ -105,7 +106,12 @@ public class Arena {
         player.sendTitle("", "");
 
         if (state == GameState.COUNTDOWN && players.size() < 2) {
-            sendMessage("§cJogadores insuficientes. Reiniciando a contagem!");
+            sendMessage("§cJogadores insuficientes para começar a partida.");
+
+            for (UUID uuid : getPlayers()) {
+                Bukkit.getPlayer(uuid).setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+                ScoreboardManager.updateScoreboardWaitingSoup(Bukkit.getPlayer(uuid));
+            }
             reset(false);
             return;
         }
@@ -114,8 +120,6 @@ public class Arena {
             sendMessage("§cO jogo acabou por ter poucos jogadores.");
             reset(true);
         }
-
-
     }
 
     public int getId() {

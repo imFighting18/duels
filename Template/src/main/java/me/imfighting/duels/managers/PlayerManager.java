@@ -1,7 +1,9 @@
 package me.imfighting.duels.managers;
 
 import me.imfighting.duels.DuelsPlugin;
+import me.imfighting.duels.MinigameType;
 import me.imfighting.duels.database.SQLConnection;
+import me.imfighting.duels.listeners.LoadListeners;
 import me.imfighting.duels.npc.NPCOptions;
 import me.imfighting.duels.npc.NPCs;
 import me.imfighting.duels.util.ConfigUtil;
@@ -124,7 +126,42 @@ public class PlayerManager {
 
         player.teleport(LocationsManagers.getLobby(player));
         ScoreboardManager.updateScoreboard(player);
-
     }
 
+    public static void updatePlayerOnReset(Player player) {
+        player.getInventory().clear();
+
+        player.getInventory().setHelmet(null);
+        player.getInventory().setChestplate(null);
+        player.getInventory().setLeggings(null);
+        player.getInventory().setBoots(null);
+
+        player.getInventory().setItem(desafiar.getInt("slot"), builder.build());
+        player.setHealth(20);
+        player.setFoodLevel(20);
+        player.setGameMode(GameMode.SURVIVAL);
+
+        if (DuelsPlugin.getPlugin().getArenaManager().getArena(player).getMinigameType() == MinigameType.SOUP) {
+            if (SQLConnection.containsNPCPlay("soup")) {
+                NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
+                        .name("§a§lSopa 1v1")
+                        .hideNametag(false)
+                        .texture(sectionSkins.getString("Soup-Lobby.texture"))
+                        .signature(sectionSkins.getString("Soup-Lobby.signature"))
+                        .location(new Location(
+                                Bukkit.getWorld(SQLConnection.getLocationNPCPlayWorld("soup")),
+                                SQLConnection.getLocationNPCPlay("soup", "x"),
+                                SQLConnection.getLocationNPCPlay("soup", "y"),
+                                SQLConnection.getLocationNPCPlay("soup", "z")
+                        ))
+                        .build()
+                );
+                npc.showTo(player);
+            }
+
+            LoadListeners.joinSoupLobby(player);
+            ScoreboardManager.updateScoreboardLobbySoup(player);
+
+        }
+    }
 }
