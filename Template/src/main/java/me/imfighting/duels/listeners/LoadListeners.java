@@ -39,6 +39,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class LoadListeners implements Listener {
 
@@ -330,7 +331,30 @@ public class LoadListeners implements Listener {
             if (event.getClickAction() == NPCClickAction.ATTACK) return;
             joinSoupLobby(player);
         } else if (clicked.getName().equalsIgnoreCase("§a§lSopa 1v1")) {
-            GameManager.sendGame(player, "soup", 0);
+            if (DuelsPlugin.getPlugin().getArenaManager().getArena(0).getPlayers().size() == 1) {
+                GameManager.sendGame(player, "soup", 0);
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(1).getPlayers().size() == 1) {
+                GameManager.sendGame(player, "soup", 1);
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(2).getPlayers().size() == 1) {
+                GameManager.sendGame(player, "soup", 2);
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(3).getPlayers().size() == 1) {
+                GameManager.sendGame(player, "soup", 3);
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(4).getPlayers().size() == 1) {
+                GameManager.sendGame(player, "soup", 4);
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(5).getPlayers().size() == 1) {
+                GameManager.sendGame(player, "soup", 5);
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(6).getPlayers().size() == 1) {
+                GameManager.sendGame(player, "soup", 6);
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(7).getPlayers().size() == 1) {
+                GameManager.sendGame(player, "soup", 7);
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(8).getPlayers().size() == 1) {
+                GameManager.sendGame(player, "soup", 8);
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(9).getPlayers().size() == 1) {
+                GameManager.sendGame(player, "soup", 9);
+            } else {
+                Random random = new Random();
+                GameManager.sendGame(player, "soup", random.nextInt(11));
+            }
         }
     }
 

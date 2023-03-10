@@ -204,6 +204,26 @@ public class SQLConnection {
         return winstreak;
     }
 
+    public static String getRanking(Player player, MinigameType minigameType) {
+        PreparedStatement stm = null;
+
+        String ranking = "";
+
+        if (minigameType == MinigameType.SOUP) {
+            try {
+                stm = con.prepareStatement("SELECT * FROM `players_soup` WHERE `uuid` = ?");
+                stm.setString(1, player.getUniqueId().toString());
+                ResultSet rs = stm.executeQuery();
+                if (rs.next()) {
+                    ranking = rs.getString("ranking");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return ranking;
+    }
+
     public static void addWinstreak(Player player, MinigameType minigameType) {
         PreparedStatement stm = null;
 

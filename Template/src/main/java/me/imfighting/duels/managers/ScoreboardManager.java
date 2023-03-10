@@ -94,7 +94,7 @@ public class ScoreboardManager {
         Score winstreak = objective.getScore("  §fWinstreak: §a" + SQLConnection.getWinstreak(player, MinigameType.SOUP));
         winstreak.setScore(4);
 
-        Score ranking = objective.getScore("  §fRanking: §7...");
+        Score ranking = objective.getScore("  §fRanking: §7" + SQLConnection.getRanking(player, MinigameType.SOUP));
         ranking.setScore(3);
 
         Score space3 = objective.getScore("§c");
@@ -134,7 +134,7 @@ public class ScoreboardManager {
         Score space2 = objective.getScore("§b");
         space2.setScore(5);
 
-        Score ranking = objective.getScore("  §fRanking: §a...");
+        Score ranking = objective.getScore("  §fRanking: §a" + SQLConnection.getRanking(player, MinigameType.SOUP));
         ranking.setScore(4);
 
         Score winstreak = objective.getScore("  §fWinstreak: §7" + SQLConnection.getWinstreak(player, MinigameType.SOUP));
@@ -179,7 +179,7 @@ public class ScoreboardManager {
         Score space2 = objective.getScore("§b");
         space2.setScore(5);
 
-        Score ranking = objective.getScore("  §fRanking: §a...");
+        Score ranking = objective.getScore("  §fRanking: §a" + SQLConnection.getRanking(player, MinigameType.SOUP));
         ranking.setScore(4);
 
         Score winstreak = objective.getScore("  §fWinstreak: §7" + SQLConnection.getWinstreak(player, MinigameType.SOUP));
@@ -290,7 +290,7 @@ public class ScoreboardManager {
         Score space2 = objective.getScore("§b");
         space2.setScore(5);
 
-        Score ranking = objective.getScore("  §fRanking: §a...");
+        Score ranking = objective.getScore("  §fRanking: §a" + SQLConnection.getRanking(player, MinigameType.SOUP));
         ranking.setScore(4);
 
         Score winstreak = objective.getScore("  §fWinstreak: §7" + SQLConnection.getWinstreak(player, MinigameType.SOUP));
