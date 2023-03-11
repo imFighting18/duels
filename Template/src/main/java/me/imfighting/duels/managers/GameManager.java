@@ -20,7 +20,7 @@ public class GameManager {
     public static void sendGame(Player player, String minigame, int id) {
         if (minigame == "soup") {
             player.getInventory().clear();
-            Arena arena = DuelsPlugin.getPlugin().getArenaManager().getArena(id);
+            Arena arena = DuelsPlugin.getPlugin().getArenaManager().getArena(id, MinigameType.SOUP);
             if (arena.getState() == GameState.RECRUITING) {
                 arena.addPlayer(player);
                 arena.setMinigameType(MinigameType.SOUP);

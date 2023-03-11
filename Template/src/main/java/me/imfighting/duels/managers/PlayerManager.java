@@ -141,7 +141,7 @@ public class PlayerManager {
         player.setFoodLevel(20);
         player.setGameMode(GameMode.SURVIVAL);
 
-        if (DuelsPlugin.getPlugin().getArenaManager().getArena(player).getMinigameType() == MinigameType.SOUP) {
+        if (DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.SOUP).getMinigameType() == MinigameType.SOUP) {
             if (SQLConnection.containsNPCPlay("soup")) {
                 NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
                         .name("§a§lSopa 1v1")

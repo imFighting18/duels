@@ -31,6 +31,9 @@ public class SQLConnection {
         PreparedStatement stm = null;
         PreparedStatement stm2 = null;
         PreparedStatement stm3 = null;
+        PreparedStatement stm4 = null;
+        PreparedStatement stm5 = null;
+        PreparedStatement stm6 = null;
         try {
             stm = con.prepareStatement("CREATE TABLE IF NOT EXISTS `npc_locations` (`minigame` TEXT, `world` TEXT, " +
                     "`X` float, `Y` " +
@@ -51,6 +54,27 @@ public class SQLConnection {
                     "TEXT, `ranking` TEXT)");
             stm3.execute();
             stm3.close();
+
+            stm4 = con.prepareStatement("CREATE TABLE IF NOT EXISTS `players_gladiator` (`uuid` TEXT, `wins` " +
+                    "TEXT, " +
+                    "`losses` TEXT, `xp` float, `winstreak` " +
+                    "TEXT, `ranking` TEXT)");
+            stm4.execute();
+            stm4.close();
+
+            stm5 = con.prepareStatement("CREATE TABLE IF NOT EXISTS `players_bridge` (`uuid` TEXT, `wins` " +
+                    "TEXT, " +
+                    "`losses` TEXT, `xp` float, `winstreak` " +
+                    "TEXT, `ranking` TEXT)");
+            stm5.execute();
+            stm5.close();
+
+            stm6 = con.prepareStatement("CREATE TABLE IF NOT EXISTS `players_gapple` (`uuid` TEXT, `wins` " +
+                    "TEXT, " +
+                    "`losses` TEXT, `xp` float, `winstreak` " +
+                    "TEXT, `ranking` TEXT)");
+            stm6.execute();
+            stm6.close();
 
             Bukkit.getConsoleSender().sendMessage("§aTabela de NPCs Jogar criada com sucesso.");
         } catch (SQLException e) {
@@ -74,6 +98,39 @@ public class SQLConnection {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        } else if (minigameType == MinigameType.GLADIATOR) {
+            try {
+                stm = con.prepareStatement("SELECT * FROM `players_gladiator` WHERE `uuid` = ?");
+                stm.setString(1, player.getUniqueId().toString());
+                ResultSet rs = stm.executeQuery();
+                if (rs.next()) {
+                    return true;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (minigameType == MinigameType.BRIDGE) {
+            try {
+                stm = con.prepareStatement("SELECT * FROM `players_bridge` WHERE `uuid` = ?");
+                stm.setString(1, player.getUniqueId().toString());
+                ResultSet rs = stm.executeQuery();
+                if (rs.next()) {
+                    return true;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (minigameType == MinigameType.GAPPLE) {
+            try {
+                stm = con.prepareStatement("SELECT * FROM `players_gapple` WHERE `uuid` = ?");
+                stm.setString(1, player.getUniqueId().toString());
+                ResultSet rs = stm.executeQuery();
+                if (rs.next()) {
+                    return true;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }
@@ -84,6 +141,90 @@ public class SQLConnection {
         if (minigameType == MinigameType.SOUP) {
             try {
                 stm = con.prepareStatement("INSERT INTO `players_soup`(" +
+                        "`uuid`, " +
+                        "`wins`, " +
+                        "`losses`, " +
+                        "`xp`, " +
+                        "`winstreak`, " +
+                        "`ranking`" +
+                        ") " +
+                        "VALUES (" +
+                        "?," +
+                        "?," +
+                        "?," +
+                        "?," +
+                        "?," +
+                        "?" +
+                        ")");
+                stm.setString(1, player.getUniqueId().toString());
+                stm.setInt(2, 0);
+                stm.setInt(3, 0);
+                stm.setDouble(4, 0);
+                stm.setInt(5, 0);
+                stm.setString(6, "Soldier I");
+                stm.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (minigameType == MinigameType.GLADIATOR) {
+            try {
+                stm = con.prepareStatement("INSERT INTO `players_gladiator`(" +
+                        "`uuid`, " +
+                        "`wins`, " +
+                        "`losses`, " +
+                        "`xp`, " +
+                        "`winstreak`, " +
+                        "`ranking`" +
+                        ") " +
+                        "VALUES (" +
+                        "?," +
+                        "?," +
+                        "?," +
+                        "?," +
+                        "?," +
+                        "?" +
+                        ")");
+                stm.setString(1, player.getUniqueId().toString());
+                stm.setInt(2, 0);
+                stm.setInt(3, 0);
+                stm.setDouble(4, 0);
+                stm.setInt(5, 0);
+                stm.setString(6, "Soldier I");
+                stm.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }else if (minigameType == MinigameType.BRIDGE) {
+            try {
+                stm = con.prepareStatement("INSERT INTO `players_bridge`(" +
+                        "`uuid`, " +
+                        "`wins`, " +
+                        "`losses`, " +
+                        "`xp`, " +
+                        "`winstreak`, " +
+                        "`ranking`" +
+                        ") " +
+                        "VALUES (" +
+                        "?," +
+                        "?," +
+                        "?," +
+                        "?," +
+                        "?," +
+                        "?" +
+                        ")");
+                stm.setString(1, player.getUniqueId().toString());
+                stm.setInt(2, 0);
+                stm.setInt(3, 0);
+                stm.setDouble(4, 0);
+                stm.setInt(5, 0);
+                stm.setString(6, "Soldier I");
+                stm.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (minigameType == MinigameType.GAPPLE) {
+            try {
+                stm = con.prepareStatement("INSERT INTO `players_gapple`(" +
                         "`uuid`, " +
                         "`wins`, " +
                         "`losses`, " +
@@ -129,6 +270,39 @@ public class SQLConnection {
             } catch (SQLException e) {
                 return 0;
             }
+        } else if (minigameType == MinigameType.GLADIATOR) {
+            try {
+                stm = con.prepareStatement("SELECT * FROM `players_gladiator` WHERE `uuid` = ?");
+                stm.setString(1, player.getUniqueId().toString());
+                ResultSet rs = stm.executeQuery();
+                if (rs.next()) {
+                    win = rs.getInt("wins");
+                }
+            } catch (SQLException e) {
+                return 0;
+            }
+        } else if (minigameType == MinigameType.BRIDGE) {
+            try {
+                stm = con.prepareStatement("SELECT * FROM `players_bridge` WHERE `uuid` = ?");
+                stm.setString(1, player.getUniqueId().toString());
+                ResultSet rs = stm.executeQuery();
+                if (rs.next()) {
+                    win = rs.getInt("wins");
+                }
+            } catch (SQLException e) {
+                return 0;
+            }
+        } else if (minigameType == MinigameType.GAPPLE) {
+            try {
+                stm = con.prepareStatement("SELECT * FROM `players_gapple` WHERE `uuid` = ?");
+                stm.setString(1, player.getUniqueId().toString());
+                ResultSet rs = stm.executeQuery();
+                if (rs.next()) {
+                    win = rs.getInt("wins");
+                }
+            } catch (SQLException e) {
+                return 0;
+            }
         }
         return win;
     }
@@ -140,6 +314,33 @@ public class SQLConnection {
             try {
                 stm = con.prepareStatement("UPDATE `players_soup` SET wins = ? WHERE uuid = ?");
                 stm.setInt(1, getWins(player, MinigameType.SOUP) + 1);
+                stm.setString(2, player.getUniqueId().toString());
+                stm.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (minigameType == MinigameType.GLADIATOR) {
+            try {
+                stm = con.prepareStatement("UPDATE `players_gladiator` SET wins = ? WHERE uuid = ?");
+                stm.setInt(1, getWins(player, MinigameType.GLADIATOR) + 1);
+                stm.setString(2, player.getUniqueId().toString());
+                stm.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (minigameType == MinigameType.BRIDGE) {
+            try {
+                stm = con.prepareStatement("UPDATE `players_bridge` SET wins = ? WHERE uuid = ?");
+                stm.setInt(1, getWins(player, MinigameType.BRIDGE) + 1);
+                stm.setString(2, player.getUniqueId().toString());
+                stm.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (minigameType == MinigameType.GAPPLE) {
+            try {
+                stm = con.prepareStatement("UPDATE `players_gapple` SET wins = ? WHERE uuid = ?");
+                stm.setInt(1, getWins(player, MinigameType.GAPPLE) + 1);
                 stm.setString(2, player.getUniqueId().toString());
                 stm.executeUpdate();
             } catch (SQLException e) {
@@ -164,6 +365,39 @@ public class SQLConnection {
             } catch (SQLException e) {
                 return 0;
             }
+        } else if (minigameType == MinigameType.GLADIATOR) {
+            try {
+                stm = con.prepareStatement("SELECT * FROM `players_gladiator` WHERE `uuid` = ?");
+                stm.setString(1, player.getUniqueId().toString());
+                ResultSet rs = stm.executeQuery();
+                if (rs.next()) {
+                    losses = rs.getInt("losses");
+                }
+            } catch (SQLException e) {
+                return 0;
+            }
+        } else if (minigameType == MinigameType.BRIDGE) {
+            try {
+                stm = con.prepareStatement("SELECT * FROM `players_bridge` WHERE `uuid` = ?");
+                stm.setString(1, player.getUniqueId().toString());
+                ResultSet rs = stm.executeQuery();
+                if (rs.next()) {
+                    losses = rs.getInt("losses");
+                }
+            } catch (SQLException e) {
+                return 0;
+            }
+        } else if (minigameType == MinigameType.GAPPLE) {
+            try {
+                stm = con.prepareStatement("SELECT * FROM `players_gapple` WHERE `uuid` = ?");
+                stm.setString(1, player.getUniqueId().toString());
+                ResultSet rs = stm.executeQuery();
+                if (rs.next()) {
+                    losses = rs.getInt("losses");
+                }
+            } catch (SQLException e) {
+                return 0;
+            }
         }
         return losses;
     }
@@ -175,6 +409,33 @@ public class SQLConnection {
             try {
                 stm = con.prepareStatement("UPDATE `players_soup` SET losses = ? WHERE uuid = ?");
                 stm.setInt(1, getLosses(player, MinigameType.SOUP) + 1);
+                stm.setString(2, player.getUniqueId().toString());
+                stm.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (minigameType == MinigameType.GLADIATOR) {
+            try {
+                stm = con.prepareStatement("UPDATE `players_gladiator` SET losses = ? WHERE uuid = ?");
+                stm.setInt(1, getLosses(player, MinigameType.GLADIATOR) + 1);
+                stm.setString(2, player.getUniqueId().toString());
+                stm.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (minigameType == MinigameType.BRIDGE) {
+            try {
+                stm = con.prepareStatement("UPDATE `players_bridge` SET losses = ? WHERE uuid = ?");
+                stm.setInt(1, getLosses(player, MinigameType.BRIDGE) + 1);
+                stm.setString(2, player.getUniqueId().toString());
+                stm.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (minigameType == MinigameType.GAPPLE) {
+            try {
+                stm = con.prepareStatement("UPDATE `players_gapple` SET losses = ? WHERE uuid = ?");
+                stm.setInt(1, getLosses(player, MinigameType.GAPPLE) + 1);
                 stm.setString(2, player.getUniqueId().toString());
                 stm.executeUpdate();
             } catch (SQLException e) {
@@ -192,6 +453,39 @@ public class SQLConnection {
         if (minigameType == MinigameType.SOUP) {
             try {
                 stm = con.prepareStatement("SELECT * FROM `players_soup` WHERE `uuid` = ?");
+                stm.setString(1, player.getUniqueId().toString());
+                ResultSet rs = stm.executeQuery();
+                if (rs.next()) {
+                    winstreak = rs.getInt("winstreak");
+                }
+            } catch (SQLException e) {
+                return 0;
+            }
+        } else if (minigameType == MinigameType.GLADIATOR) {
+            try {
+                stm = con.prepareStatement("SELECT * FROM `players_gladiator` WHERE `uuid` = ?");
+                stm.setString(1, player.getUniqueId().toString());
+                ResultSet rs = stm.executeQuery();
+                if (rs.next()) {
+                    winstreak = rs.getInt("winstreak");
+                }
+            } catch (SQLException e) {
+                return 0;
+            }
+        } else if (minigameType == MinigameType.BRIDGE) {
+            try {
+                stm = con.prepareStatement("SELECT * FROM `players_bridge` WHERE `uuid` = ?");
+                stm.setString(1, player.getUniqueId().toString());
+                ResultSet rs = stm.executeQuery();
+                if (rs.next()) {
+                    winstreak = rs.getInt("winstreak");
+                }
+            } catch (SQLException e) {
+                return 0;
+            }
+        } else if (minigameType == MinigameType.GAPPLE) {
+            try {
+                stm = con.prepareStatement("SELECT * FROM `players_gapple` WHERE `uuid` = ?");
                 stm.setString(1, player.getUniqueId().toString());
                 ResultSet rs = stm.executeQuery();
                 if (rs.next()) {
@@ -220,6 +514,39 @@ public class SQLConnection {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        } else if (minigameType == MinigameType.GLADIATOR) {
+            try {
+                stm = con.prepareStatement("SELECT * FROM `players_gladiator` WHERE `uuid` = ?");
+                stm.setString(1, player.getUniqueId().toString());
+                ResultSet rs = stm.executeQuery();
+                if (rs.next()) {
+                    ranking = rs.getString("ranking");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (minigameType == MinigameType.BRIDGE) {
+            try {
+                stm = con.prepareStatement("SELECT * FROM `players_bridge` WHERE `uuid` = ?");
+                stm.setString(1, player.getUniqueId().toString());
+                ResultSet rs = stm.executeQuery();
+                if (rs.next()) {
+                    ranking = rs.getString("ranking");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (minigameType == MinigameType.GAPPLE) {
+            try {
+                stm = con.prepareStatement("SELECT * FROM `players_gapple` WHERE `uuid` = ?");
+                stm.setString(1, player.getUniqueId().toString());
+                ResultSet rs = stm.executeQuery();
+                if (rs.next()) {
+                    ranking = rs.getString("ranking");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return ranking;
     }
@@ -236,6 +563,33 @@ public class SQLConnection {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        } else if (minigameType == MinigameType.GLADIATOR) {
+            try {
+                stm = con.prepareStatement("UPDATE `players_gladiator` SET winstreak = ? WHERE uuid = ?");
+                stm.setInt(1, getWinstreak(player, MinigameType.GLADIATOR) + 1);
+                stm.setString(2, player.getUniqueId().toString());
+                stm.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (minigameType == MinigameType.BRIDGE) {
+            try {
+                stm = con.prepareStatement("UPDATE `players_bridge` SET winstreak = ? WHERE uuid = ?");
+                stm.setInt(1, getWinstreak(player, MinigameType.BRIDGE) + 1);
+                stm.setString(2, player.getUniqueId().toString());
+                stm.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (minigameType == MinigameType.GAPPLE) {
+            try {
+                stm = con.prepareStatement("UPDATE `players_gapple` SET winstreak = ? WHERE uuid = ?");
+                stm.setInt(1, getWinstreak(player, MinigameType.GAPPLE) + 1);
+                stm.setString(2, player.getUniqueId().toString());
+                stm.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -245,6 +599,33 @@ public class SQLConnection {
         if (minigameType == MinigameType.SOUP) {
             try {
                 stm = con.prepareStatement("UPDATE `players_soup` SET winstreak = ? WHERE uuid = ?");
+                stm.setInt(1, 0);
+                stm.setString(2, player.getUniqueId().toString());
+                stm.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (minigameType == MinigameType.GLADIATOR) {
+            try {
+                stm = con.prepareStatement("UPDATE `players_gladiator` SET winstreak = ? WHERE uuid = ?");
+                stm.setInt(1, 0);
+                stm.setString(2, player.getUniqueId().toString());
+                stm.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (minigameType == MinigameType.BRIDGE) {
+            try {
+                stm = con.prepareStatement("UPDATE `players_bridge` SET winstreak = ? WHERE uuid = ?");
+                stm.setInt(1, 0);
+                stm.setString(2, player.getUniqueId().toString());
+                stm.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else if (minigameType == MinigameType.GAPPLE) {
+            try {
+                stm = con.prepareStatement("UPDATE `players_gapple` SET winstreak = ? WHERE uuid = ?");
                 stm.setInt(1, 0);
                 stm.setString(2, player.getUniqueId().toString());
                 stm.executeUpdate();

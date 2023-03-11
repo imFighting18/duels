@@ -47,6 +47,9 @@ public class LoadListeners implements Listener {
     static final ConfigUtil locations = DuelsPlugin.getPlugin().getLocations();
     final ConfigurationSection section = config.getConfigurationSection("item-desafiar");
     static final ConfigurationSection sectionLobbySoup = locations.getConfigurationSection("Soup");
+
+    static final ConfigurationSection sectionLobbyGladiator = locations.getConfigurationSection("Gladiator");
+
     final ConfigurationSection sectionSkins = config.getConfigurationSection("Skins");
 
     final ConfigurationSection desafiar = config.getConfigurationSection("item-desafiar");
@@ -67,8 +70,41 @@ public class LoadListeners implements Listener {
             SQLConnection.createPlayer(player, MinigameType.SOUP);
         }
 
+        if (!SQLConnection.containsPlayer(player, MinigameType.GLADIATOR)) {
+            SQLConnection.createPlayer(player, MinigameType.GLADIATOR);
+        }
+
+        if (!SQLConnection.containsPlayer(player, MinigameType.BRIDGE)) {
+            SQLConnection.createPlayer(player, MinigameType.BRIDGE);
+        }
+
+        if (!SQLConnection.containsPlayer(player, MinigameType.GAPPLE)) {
+            SQLConnection.createPlayer(player, MinigameType.GAPPLE);
+        }
+
         for (Player online : Bukkit.getOnlinePlayers()) {
-            if (!DuelsPlugin.getPlugin().getArenaManager().getArena(online).getPlayers().contains(online)) {
+            if (!DuelsPlugin.getPlugin().getArenaManager().getArena(online, MinigameType.SOUP).getPlayers().contains(online)) {
+                player.hidePlayer(online);
+                online.hidePlayer(player);
+            }
+        }
+
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            if (!DuelsPlugin.getPlugin().getArenaManager().getArena(online, MinigameType.GLADIATOR).getPlayers().contains(online)) {
+                player.hidePlayer(online);
+                online.hidePlayer(player);
+            }
+        }
+
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            if (!DuelsPlugin.getPlugin().getArenaManager().getArena(online, MinigameType.BRIDGE).getPlayers().contains(online)) {
+                player.hidePlayer(online);
+                online.hidePlayer(player);
+            }
+        }
+
+        for (Player online : Bukkit.getOnlinePlayers()) {
+            if (!DuelsPlugin.getPlugin().getArenaManager().getArena(online, MinigameType.GAPPLE).getPlayers().contains(online)) {
                 player.hidePlayer(online);
                 online.hidePlayer(player);
             }
@@ -85,7 +121,7 @@ public class LoadListeners implements Listener {
         if (SQLConnection.containsNPCPlay("soup") &&
                 player.getWorld().getName().equalsIgnoreCase(SQLConnection.getLocationNPCPlayWorld("soup"))) {
             NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
-                    .name("§a§lSopa 1v1")
+                    .name("§bSopa 1v1")
                     .hideNametag(false)
                     .texture(sectionSkins.getString("Soup-Lobby.texture"))
                     .signature(sectionSkins.getString("Soup-Lobby.signature"))
@@ -101,9 +137,9 @@ public class LoadListeners implements Listener {
         }
 
         if (SQLConnection.containsNPCPlay("gladiator") &&
-                player.getWorld().getName().equalsIgnoreCase(SQLConnection.getLocationNPCPlayWorld("soup"))) {
+                player.getWorld().getName().equalsIgnoreCase(SQLConnection.getLocationNPCPlayWorld("gladiator"))) {
             NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
-                    .name("§a§lGladiator 1v1")
+                    .name("§bGladiator 1v1")
                     .hideNametag(false)
                     .texture(sectionSkins.getString("Gladiator-Lobby.texture"))
                     .signature(sectionSkins.getString("Gladiator-Lobby.signature"))
@@ -209,9 +245,24 @@ public class LoadListeners implements Listener {
     public void onPlayerQuit(PlayerQuitEvent e) {
         e.setQuitMessage(null);
 
-        Arena arena = DuelsPlugin.getPlugin().getArenaManager().getArena(e.getPlayer());
-        if (arena != null) {
-            arena.removePlayer(e.getPlayer());
+        Arena arenaSoup = DuelsPlugin.getPlugin().getArenaManager().getArena(e.getPlayer(), MinigameType.SOUP);
+        if (arenaSoup != null) {
+            arenaSoup.removePlayer(e.getPlayer());
+        }
+
+        Arena arenaGladiator = DuelsPlugin.getPlugin().getArenaManager().getArena(e.getPlayer(), MinigameType.GLADIATOR);
+        if (arenaGladiator != null) {
+            arenaGladiator.removePlayer(e.getPlayer());
+        }
+
+        Arena arenaBridge = DuelsPlugin.getPlugin().getArenaManager().getArena(e.getPlayer(), MinigameType.BRIDGE);
+        if (arenaBridge != null) {
+            arenaBridge.removePlayer(e.getPlayer());
+        }
+
+        Arena arenaGapple = DuelsPlugin.getPlugin().getArenaManager().getArena(e.getPlayer(), MinigameType.GAPPLE);
+        if (arenaGapple != null) {
+            arenaGapple.removePlayer(e.getPlayer());
         }
 
     }
@@ -254,7 +305,28 @@ public class LoadListeners implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    DuelsPlugin.getPlugin().getArenaManager().getArena(player).reset(true);
+                    DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.SOUP).reset(true);
+                }
+            }.runTaskLater(DuelsPlugin.getPlugin(), 1L);
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.GLADIATOR).reset(true);
+                }
+            }.runTaskLater(DuelsPlugin.getPlugin(), 1L);
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.BRIDGE).reset(true);
+                }
+            }.runTaskLater(DuelsPlugin.getPlugin(), 1L);
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.GAPPLE).reset(true);
                 }
             }.runTaskLater(DuelsPlugin.getPlugin(), 1L);
 
@@ -304,10 +376,27 @@ public class LoadListeners implements Listener {
 
         e.setCancelled(true);
 
-        if ((DuelsPlugin.getPlugin().getArenaManager().getArena(player) != null) &&
-                DuelsPlugin.getPlugin().getArenaManager().getArena(player).getState() == GameState.LIVE) {
+        if ((DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.SOUP) != null) &&
+                DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.SOUP).getState() == GameState.LIVE) {
             e.setCancelled(false);
         }
+
+        if ((DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.GLADIATOR) != null) &&
+                DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.GLADIATOR).getState() == GameState.LIVE) {
+            e.setCancelled(false);
+        }
+
+        if ((DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.BRIDGE) != null) &&
+                DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.BRIDGE).getState() == GameState.LIVE) {
+            e.setCancelled(false);
+        }
+
+        if ((DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.GAPPLE) != null) &&
+                DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.GAPPLE).getState() == GameState.LIVE) {
+            e.setCancelled(false);
+        }
+
+
     }
 
 
@@ -331,31 +420,62 @@ public class LoadListeners implements Listener {
             if (event.getClickAction() == NPCClickAction.ATTACK) return;
             joinSoupLobby(player);
         } else if (clicked.getName().equalsIgnoreCase("§a§lSopa 1v1")) {
-            if (DuelsPlugin.getPlugin().getArenaManager().getArena(0).getPlayers().size() == 1) {
+            if (DuelsPlugin.getPlugin().getArenaManager().getArena(0, MinigameType.SOUP).getPlayers().size() == 1) {
                 GameManager.sendGame(player, "soup", 0);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(1).getPlayers().size() == 1) {
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(1, MinigameType.SOUP).getPlayers().size() == 1) {
                 GameManager.sendGame(player, "soup", 1);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(2).getPlayers().size() == 1) {
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(2, MinigameType.SOUP).getPlayers().size() == 1) {
                 GameManager.sendGame(player, "soup", 2);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(3).getPlayers().size() == 1) {
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(3, MinigameType.SOUP).getPlayers().size() == 1) {
                 GameManager.sendGame(player, "soup", 3);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(4).getPlayers().size() == 1) {
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(4, MinigameType.SOUP).getPlayers().size() == 1) {
                 GameManager.sendGame(player, "soup", 4);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(5).getPlayers().size() == 1) {
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(5, MinigameType.SOUP).getPlayers().size() == 1) {
                 GameManager.sendGame(player, "soup", 5);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(6).getPlayers().size() == 1) {
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(6, MinigameType.SOUP).getPlayers().size() == 1) {
                 GameManager.sendGame(player, "soup", 6);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(7).getPlayers().size() == 1) {
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(7, MinigameType.SOUP).getPlayers().size() == 1) {
                 GameManager.sendGame(player, "soup", 7);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(8).getPlayers().size() == 1) {
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(8, MinigameType.SOUP).getPlayers().size() == 1) {
                 GameManager.sendGame(player, "soup", 8);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(9).getPlayers().size() == 1) {
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(9, MinigameType.SOUP).getPlayers().size() == 1) {
                 GameManager.sendGame(player, "soup", 9);
             } else {
                 Random random = new Random();
                 GameManager.sendGame(player, "soup", random.nextInt(11));
             }
         }
+
+        if (clicked.getName().equalsIgnoreCase("§bGladiator")) {
+            if (event.getClickAction() == NPCClickAction.ATTACK) return;
+            joinGladiatorLobby(player);
+        } else if (clicked.getName().equalsIgnoreCase("§bGladiator 1v1")) {
+            if (DuelsPlugin.getPlugin().getArenaManager().getArena(0, MinigameType.GLADIATOR).getPlayers().size() == 1) {
+                GameManager.sendGame(player, "soup", 0);
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(1, MinigameType.GLADIATOR).getPlayers().size() == 1) {
+                GameManager.sendGame(player, "soup", 1);
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(2, MinigameType.GLADIATOR).getPlayers().size() == 1) {
+                GameManager.sendGame(player, "soup", 2);
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(3, MinigameType.GLADIATOR).getPlayers().size() == 1) {
+                GameManager.sendGame(player, "soup", 3);
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(4, MinigameType.GLADIATOR).getPlayers().size() == 1) {
+                GameManager.sendGame(player, "soup", 4);
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(5, MinigameType.GLADIATOR).getPlayers().size() == 1) {
+                GameManager.sendGame(player, "soup", 5);
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(6, MinigameType.GLADIATOR).getPlayers().size() == 1) {
+                GameManager.sendGame(player, "soup", 6);
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(7, MinigameType.GLADIATOR).getPlayers().size() == 1) {
+                GameManager.sendGame(player, "soup", 7);
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(8, MinigameType.GLADIATOR).getPlayers().size() == 1) {
+                GameManager.sendGame(player, "soup", 8);
+            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(9, MinigameType.GLADIATOR).getPlayers().size() == 1) {
+                GameManager.sendGame(player, "soup", 9);
+            } else {
+                Random random = new Random();
+                GameManager.sendGame(player, "soup", random.nextInt(11));
+            }
+        }
+
     }
 
     public static void joinSoupLobby(Player player) {
@@ -367,5 +487,16 @@ public class LoadListeners implements Listener {
                 (float) sectionLobbySoup.getDouble("Pitch")));
         player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
         ScoreboardManager.updateScoreboardLobbySoup(player);
+    }
+
+    public static void joinGladiatorLobby(Player player) {
+        player.teleport(new Location(Bukkit.getWorld(sectionLobbyGladiator.getString("World")),
+                sectionLobbyGladiator.getDouble("X"),
+                sectionLobbyGladiator.getDouble("Y"),
+                sectionLobbyGladiator.getDouble("Z"),
+                (float) sectionLobbyGladiator.getDouble("Yaw"),
+                (float) sectionLobbyGladiator.getDouble("Pitch")));
+        player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+        ScoreboardManager.updateScoreboardLobbyGladiator(player);
     }
 }

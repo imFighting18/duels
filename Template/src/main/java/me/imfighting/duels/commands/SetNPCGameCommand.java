@@ -45,7 +45,7 @@ public class SetNPCGameCommand implements CommandExecutor {
                 }
 
                 NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
-                        .name("§a§lSopa 1v1")
+                        .name("§bSopa 1v1")
                         .hideNametag(false)
                         .texture(sectionSkins.getString("Soup-Lobby.texture"))
                         .signature(sectionSkins.getString("Soup-Lobby.signature"))
@@ -63,7 +63,7 @@ public class SetNPCGameCommand implements CommandExecutor {
                 }
 
                 NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
-                        .name("§a§lGladiator 1v1")
+                        .name("§bGladiator 1v1")
                         .hideNametag(false)
                         .texture(sectionSkins.getString("Gladiator-Lobby.texture"))
                         .signature(sectionSkins.getString("Gladiator-Lobby.signature"))

@@ -121,7 +121,7 @@ public class ScoreboardManager {
 
         Score players =
                 objective.getScore("  §fJogadores: §a" +
-                        DuelsPlugin.getPlugin().getArenaManager().getArena(player).getPlayers().size()
+                        DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.SOUP).getPlayers().size()
                         + "/2");
         players.setScore(8);
 
@@ -163,7 +163,7 @@ public class ScoreboardManager {
 
         Score players =
                 objective.getScore("  §fJogadores: §a" +
-                        DuelsPlugin.getPlugin().getArenaManager().getArena(player).getPlayers().size()
+                        DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.SOUP).getPlayers().size()
                         + "/2");
         players.setScore(8);
 
@@ -216,13 +216,13 @@ public class ScoreboardManager {
         Score space1 = objective.getScore("§a");
         space1.setScore(8);
 
-        if (DuelsPlugin.getPlugin().getArenaManager().getArena(player).getPlayers().get(0) != player.getUniqueId()) {
+        if (DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.SOUP).getPlayers().get(0) != player.getUniqueId()) {
             Team adv = scoreboard.registerNewTeam("adversario");
             adv.addEntry("§2");
-            adv.setPrefix("  §c" + Bukkit.getPlayer(DuelsPlugin.getPlugin().getArenaManager().getArena(player).getPlayers().get(0)).getName() + ":");
+            adv.setPrefix("  §c" + Bukkit.getPlayer(DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.SOUP).getPlayers().get(0)).getName() + ":");
 
             CraftPlayer craftPlayer =
-                    (CraftPlayer) Bukkit.getPlayer(DuelsPlugin.getPlugin().getArenaManager().getArena(player).getPlayers().get(0));
+                    (CraftPlayer) Bukkit.getPlayer(DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.SOUP).getPlayers().get(0));
             int ping = craftPlayer.getHandle().ping;
 
             new BukkitRunnable() {
@@ -252,13 +252,13 @@ public class ScoreboardManager {
 
         }
 
-        if (DuelsPlugin.getPlugin().getArenaManager().getArena(player).getPlayers().get(1) != player.getUniqueId()) {
+        if (DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.SOUP).getPlayers().get(1) != player.getUniqueId()) {
             Team adv = scoreboard.registerNewTeam("adversario");
             adv.addEntry("§2");
-            adv.setPrefix("   §c" + Bukkit.getPlayer(DuelsPlugin.getPlugin().getArenaManager().getArena(player).getPlayers().get(1)).getName() + ":");
+            adv.setPrefix("   §c" + Bukkit.getPlayer(DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.SOUP).getPlayers().get(1)).getName() + ":");
 
             CraftPlayer craftPlayer =
-                    (CraftPlayer) Bukkit.getPlayer(DuelsPlugin.getPlugin().getArenaManager().getArena(player).getPlayers().get(1));
+                    (CraftPlayer) Bukkit.getPlayer(DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.SOUP).getPlayers().get(1));
             int ping = craftPlayer.getHandle().ping;
 
             new BukkitRunnable() {
@@ -298,6 +298,39 @@ public class ScoreboardManager {
 
         Score space4 = objective.getScore("§c");
         space4.setScore(2);
+
+        Score website = objective.getScore(lines.get(9));
+        website.setScore(1);
+
+        player.setScoreboard(scoreboard);
+    }
+
+    public static void updateScoreboardLobbyGladiator(Player player) {
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        Objective objective = scoreboard.registerNewObjective("test", "dummy");
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        objective.setDisplayName("§b§lGLADIATOR");
+
+        Score space1 = objective.getScore("§a");
+        space1.setScore(8);
+
+        Score wins = objective.getScore("  §fVitórias: §7" + SQLConnection.getWins(player, MinigameType.GLADIATOR));
+        wins.setScore(7);
+
+        Score losses = objective.getScore("  §fDerrotas: §7" + SQLConnection.getLosses(player, MinigameType.GLADIATOR));
+        losses.setScore(6);
+
+        Score space2 = objective.getScore("§b");
+        space2.setScore(5);
+
+        Score winstreak = objective.getScore("  §fWinstreak: §a" + SQLConnection.getWinstreak(player, MinigameType.GLADIATOR));
+        winstreak.setScore(4);
+
+        Score ranking = objective.getScore("  §fRanking: §7" + SQLConnection.getRanking(player, MinigameType.GLADIATOR));
+        ranking.setScore(3);
+
+        Score space3 = objective.getScore("§c");
+        space3.setScore(2);
 
         Score website = objective.getScore(lines.get(9));
         website.setScore(1);

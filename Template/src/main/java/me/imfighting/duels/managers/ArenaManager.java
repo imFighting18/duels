@@ -14,6 +14,9 @@ import java.util.List;
 public class ArenaManager {
 
     private List<Arena> arenasSoup = new ArrayList<>();
+    private List<Arena> arenasGladiator = new ArrayList<>();
+    private List<Arena> arenasBridge = new ArrayList<>();
+    private List<Arena> arenasGapple = new ArrayList<>();
 
     public ArenaManager(DuelsPlugin minigames) {
         FileConfiguration config = minigames.getArenas();
@@ -31,25 +34,125 @@ public class ArenaManager {
                                     (float) config.getDouble("Soup." + str + ".pitch")
                             )));
         }
+
+        for (String str : config.getConfigurationSection("Gladiator.").getKeys(false)) {
+            arenasGladiator.add(
+                    new Arena(
+                            minigames,
+                            Integer.parseInt(str),
+                            new Location(
+                                    Bukkit.getWorld(config.getString("Gladiator." + str + ".world")),
+                                    config.getDouble("Gladiator." + str + ".x"),
+                                    config.getDouble("Gladiator." + str + ".y"),
+                                    config.getDouble("Gladiator." + str + ".z"),
+                                    (float) config.getDouble("Gladiator." + str + ".yaw"),
+                                    (float) config.getDouble("Gladiator." + str + ".pitch")
+                            )));
+        }
+
+        for (String str : config.getConfigurationSection("Bridge.").getKeys(false)) {
+            arenasBridge.add(
+                    new Arena(
+                            minigames,
+                            Integer.parseInt(str),
+                            new Location(
+                                    Bukkit.getWorld(config.getString("Bridge." + str + ".world")),
+                                    config.getDouble("Bridge." + str + ".x"),
+                                    config.getDouble("Bridge." + str + ".y"),
+                                    config.getDouble("Bridge." + str + ".z"),
+                                    (float) config.getDouble("Bridge." + str + ".yaw"),
+                                    (float) config.getDouble("Bridge." + str + ".pitch")
+                            )));
+        }
+
+        for (String str : config.getConfigurationSection("Gapple.").getKeys(false)) {
+            arenasGapple.add(
+                    new Arena(
+                            minigames,
+                            Integer.parseInt(str),
+                            new Location(
+                                    Bukkit.getWorld(config.getString("Gapple." + str + ".world")),
+                                    config.getDouble("Gapple." + str + ".x"),
+                                    config.getDouble("Gapple." + str + ".y"),
+                                    config.getDouble("Gapple." + str + ".z"),
+                                    (float) config.getDouble("Gapple." + str + ".yaw"),
+                                    (float) config.getDouble("Gapple." + str + ".pitch")
+                            )));
+
+        }
     }
 
     public List<Arena> getArenasSoup() {
         return arenasSoup;
     }
 
-    public Arena getArena(Player player) {
-        for (Arena arena : arenasSoup) {
-            if (arena.getPlayers().contains(player.getUniqueId())) {
-                return arena;
+    public List<Arena> getArenasGladiator() {
+        return arenasGladiator;
+    }
+
+    public List<Arena> getArenasBridge() {
+        return arenasBridge;
+    }
+
+    public List<Arena> getArenasGapple() {
+        return arenasGapple;
+    }
+
+    public Arena getArena(Player player, MinigameType minigameType) {
+        if (minigameType == MinigameType.SOUP) {
+            for (Arena arena : arenasSoup) {
+                if (arena.getPlayers().contains(player.getUniqueId())) {
+                    return arena;
+                }
+            }
+        } else if (minigameType == MinigameType.GLADIATOR) {
+            for (Arena arena : arenasGladiator) {
+                if (arena.getPlayers().contains(player.getUniqueId())) {
+                    return arena;
+                }
+            }
+        } else if (minigameType == MinigameType.BRIDGE) {
+            for (Arena arena : arenasBridge) {
+                if (arena.getPlayers().contains(player.getUniqueId())) {
+                    return arena;
+                }
+            }
+        } else if (minigameType == MinigameType.GAPPLE) {
+            for (Arena arena : arenasGapple) {
+                if (arena.getPlayers().contains(player.getUniqueId())) {
+                    return arena;
+                }
             }
         }
+
         return null;
     }
 
-    public Arena getArena(int id) {
-        for (Arena arena : arenasSoup) {
-            if (arena.getId() == id) {
-                return arena;
+    public Arena getArena(int id, MinigameType minigameType) {
+
+        if (minigameType == MinigameType.SOUP) {
+            for (Arena arena : arenasSoup) {
+                if (arena.getId() == id) {
+                    return arena;
+                }
+            }
+        } else if (minigameType == MinigameType.GLADIATOR) {
+            for (Arena arena : arenasGladiator) {
+                if (arena.getId() == id) {
+                    return arena;
+                }
+            }
+        } else if (minigameType == MinigameType.BRIDGE) {
+            for (Arena arena : arenasBridge) {
+                if (arena.getId() == id) {
+                    return arena;
+                }
+            }
+        } else if (minigameType == MinigameType.GAPPLE) {
+            for (Arena arena : arenasGapple) {
+                if (arena.getId() == id) {
+                    return arena;
+                }
             }
         }
         return null;
