@@ -62,7 +62,7 @@ public class SQLConnection {
             stm4.execute();
             stm4.close();
 
-            stm5 = con.prepareStatement("CREATE TABLE IF NOT EXISTS `players_bridge` (`uuid` TEXT, `wins` " +
+            stm5 = con.prepareStatement("CREATE TABLE IF NOT EXISTS `players_sumo` (`uuid` TEXT, `wins` " +
                     "TEXT, " +
                     "`losses` TEXT, `xp` float, `winstreak` " +
                     "TEXT, `ranking` TEXT)");
@@ -109,9 +109,9 @@ public class SQLConnection {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        } else if (minigameType == MinigameType.BRIDGE) {
+        } else if (minigameType == MinigameType.SUMO) {
             try {
-                stm = con.prepareStatement("SELECT * FROM `players_bridge` WHERE `uuid` = ?");
+                stm = con.prepareStatement("SELECT * FROM `players_sumo` WHERE `uuid` = ?");
                 stm.setString(1, player.getUniqueId().toString());
                 ResultSet rs = stm.executeQuery();
                 if (rs.next()) {
@@ -194,9 +194,9 @@ public class SQLConnection {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }else if (minigameType == MinigameType.BRIDGE) {
+        }else if (minigameType == MinigameType.SUMO) {
             try {
-                stm = con.prepareStatement("INSERT INTO `players_bridge`(" +
+                stm = con.prepareStatement("INSERT INTO `players_sumo`(" +
                         "`uuid`, " +
                         "`wins`, " +
                         "`losses`, " +
@@ -281,9 +281,9 @@ public class SQLConnection {
             } catch (SQLException e) {
                 return 0;
             }
-        } else if (minigameType == MinigameType.BRIDGE) {
+        } else if (minigameType == MinigameType.SUMO) {
             try {
-                stm = con.prepareStatement("SELECT * FROM `players_bridge` WHERE `uuid` = ?");
+                stm = con.prepareStatement("SELECT * FROM `players_SUMO` WHERE `uuid` = ?");
                 stm.setString(1, player.getUniqueId().toString());
                 ResultSet rs = stm.executeQuery();
                 if (rs.next()) {
@@ -328,10 +328,10 @@ public class SQLConnection {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        } else if (minigameType == MinigameType.BRIDGE) {
+        } else if (minigameType == MinigameType.SUMO) {
             try {
-                stm = con.prepareStatement("UPDATE `players_bridge` SET wins = ? WHERE uuid = ?");
-                stm.setInt(1, getWins(player, MinigameType.BRIDGE) + 1);
+                stm = con.prepareStatement("UPDATE `players_sumo` SET wins = ? WHERE uuid = ?");
+                stm.setInt(1, getWins(player, MinigameType.SUMO) + 1);
                 stm.setString(2, player.getUniqueId().toString());
                 stm.executeUpdate();
             } catch (SQLException e) {
@@ -376,9 +376,9 @@ public class SQLConnection {
             } catch (SQLException e) {
                 return 0;
             }
-        } else if (minigameType == MinigameType.BRIDGE) {
+        } else if (minigameType == MinigameType.SUMO) {
             try {
-                stm = con.prepareStatement("SELECT * FROM `players_bridge` WHERE `uuid` = ?");
+                stm = con.prepareStatement("SELECT * FROM `players_sumo` WHERE `uuid` = ?");
                 stm.setString(1, player.getUniqueId().toString());
                 ResultSet rs = stm.executeQuery();
                 if (rs.next()) {
@@ -423,10 +423,10 @@ public class SQLConnection {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        } else if (minigameType == MinigameType.BRIDGE) {
+        } else if (minigameType == MinigameType.SUMO) {
             try {
-                stm = con.prepareStatement("UPDATE `players_bridge` SET losses = ? WHERE uuid = ?");
-                stm.setInt(1, getLosses(player, MinigameType.BRIDGE) + 1);
+                stm = con.prepareStatement("UPDATE `players_sumo` SET losses = ? WHERE uuid = ?");
+                stm.setInt(1, getLosses(player, MinigameType.SUMO) + 1);
                 stm.setString(2, player.getUniqueId().toString());
                 stm.executeUpdate();
             } catch (SQLException e) {
@@ -472,9 +472,9 @@ public class SQLConnection {
             } catch (SQLException e) {
                 return 0;
             }
-        } else if (minigameType == MinigameType.BRIDGE) {
+        } else if (minigameType == MinigameType.SUMO) {
             try {
-                stm = con.prepareStatement("SELECT * FROM `players_bridge` WHERE `uuid` = ?");
+                stm = con.prepareStatement("SELECT * FROM `players_sumo` WHERE `uuid` = ?");
                 stm.setString(1, player.getUniqueId().toString());
                 ResultSet rs = stm.executeQuery();
                 if (rs.next()) {
@@ -525,9 +525,9 @@ public class SQLConnection {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        } else if (minigameType == MinigameType.BRIDGE) {
+        } else if (minigameType == MinigameType.SUMO) {
             try {
-                stm = con.prepareStatement("SELECT * FROM `players_bridge` WHERE `uuid` = ?");
+                stm = con.prepareStatement("SELECT * FROM `players_sumo` WHERE `uuid` = ?");
                 stm.setString(1, player.getUniqueId().toString());
                 ResultSet rs = stm.executeQuery();
                 if (rs.next()) {
@@ -572,10 +572,10 @@ public class SQLConnection {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        } else if (minigameType == MinigameType.BRIDGE) {
+        } else if (minigameType == MinigameType.SUMO) {
             try {
-                stm = con.prepareStatement("UPDATE `players_bridge` SET winstreak = ? WHERE uuid = ?");
-                stm.setInt(1, getWinstreak(player, MinigameType.BRIDGE) + 1);
+                stm = con.prepareStatement("UPDATE `players_sumo` SET winstreak = ? WHERE uuid = ?");
+                stm.setInt(1, getWinstreak(player, MinigameType.SUMO) + 1);
                 stm.setString(2, player.getUniqueId().toString());
                 stm.executeUpdate();
             } catch (SQLException e) {
@@ -614,9 +614,9 @@ public class SQLConnection {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        } else if (minigameType == MinigameType.BRIDGE) {
+        } else if (minigameType == MinigameType.SUMO) {
             try {
-                stm = con.prepareStatement("UPDATE `players_bridge` SET winstreak = ? WHERE uuid = ?");
+                stm = con.prepareStatement("UPDATE `players_sumo` SET winstreak = ? WHERE uuid = ?");
                 stm.setInt(1, 0);
                 stm.setString(2, player.getUniqueId().toString());
                 stm.executeUpdate();

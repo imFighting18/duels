@@ -51,17 +51,17 @@ public class SetNPCCommand implements CommandExecutor {
                 npc.showTo(player);
                 setLocationNPC(player, "soup");
                 player.sendMessage(section.getString("sucess-setnpc").replace('&', '§'));
-            } else if (strings[0].equalsIgnoreCase("bridge")) {
+            } else if (strings[0].equalsIgnoreCase("sumo")) {
                 NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
-                        .name("§bThe bridge")
+                        .name("§bSumo")
                         .hideNametag(false)
-                        .texture(sectionSkins.getString("Bridge.texture"))
-                        .signature(sectionSkins.getString("Bridge.signature"))
+                        .texture(sectionSkins.getString("Sumo.texture"))
+                        .signature(sectionSkins.getString("Sumo.signature"))
                         .location(player.getLocation())
                         .build()
                 );
                 npc.showTo(player);
-                setLocationNPC(player, "bridge");
+                setLocationNPC(player, "sumo");
                 player.sendMessage(section.getString("sucess-setnpc").replace('&', '§'));
             } else if (strings[0].equalsIgnoreCase("gladiator")) {
                 NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
@@ -99,8 +99,8 @@ public class SetNPCCommand implements CommandExecutor {
 
         if (minigame == "soup") {
             SQLConnection.setLocation(player, "soup");
-        } else if (minigame == "bridge") {
-            SQLConnection.setLocation(player, "bridge");
+        } else if (minigame == "sumo") {
+            SQLConnection.setLocation(player, "sumo");
         } else if (minigame == "gladiator") {
             SQLConnection.setLocation(player, "gladiator");
         } else if (minigame == "gapple") {

@@ -4,6 +4,6 @@ public enum MinigameType {
     NONE,
     SOUP,
     GLADIATOR,
-    BRIDGE,
+    SUMO,
     GAPPLE
 }

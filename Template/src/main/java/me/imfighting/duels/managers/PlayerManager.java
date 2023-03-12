@@ -56,17 +56,17 @@ public class PlayerManager {
             npc.showTo(player);
         }
 
-        if (SQLConnection.containsNPC("bridge")) {
+        if (SQLConnection.containsNPC("sumo")) {
             NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
-                    .name("§bThe bridge")
+                    .name("§bSumo")
                     .hideNametag(false)
-                    .texture(sectionSkins.getString("Bridge.texture"))
-                    .signature(sectionSkins.getString("Bridge.signature"))
+                    .texture(sectionSkins.getString("Sumo.texture"))
+                    .signature(sectionSkins.getString("Sumo.signature"))
                     .location(new Location(
-                            Bukkit.getWorld(SQLConnection.getLocationNPCWorld("bridge")),
-                            SQLConnection.getLocationNPC("bridge", "x"),
-                            SQLConnection.getLocationNPC("bridge", "y"),
-                            SQLConnection.getLocationNPC("bridge", "z")
+                            Bukkit.getWorld(SQLConnection.getLocationNPCWorld("sumo")),
+                            SQLConnection.getLocationNPC("sumo", "x"),
+                            SQLConnection.getLocationNPC("sumo", "y"),
+                            SQLConnection.getLocationNPC("sumo", "z")
                     ))
                     .build()
             );

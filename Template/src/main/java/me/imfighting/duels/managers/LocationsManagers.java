@@ -81,13 +81,13 @@ public class LocationsManagers {
             DuelsPlugin.getPlugin().getLocations().set("NPC.Soup.Yaw", player.getLocation().getYaw());
             DuelsPlugin.getPlugin().getLocations().set("NPC.Soup.Pitch", player.getLocation().getPitch());
             DuelsPlugin.getPlugin().getLocations().save();
-        } else if (minigame == "bridge") {
-            DuelsPlugin.getPlugin().getLocations().set("NPC.Bridge.World", player.getLocation().getWorld().getName());
-            DuelsPlugin.getPlugin().getLocations().set("NPC.Bridge.X", player.getLocation().getX());
-            DuelsPlugin.getPlugin().getLocations().set("NPC.Bridge.Y", player.getLocation().getY());
-            DuelsPlugin.getPlugin().getLocations().set("NPC.Bridge.Z", player.getLocation().getZ());
-            DuelsPlugin.getPlugin().getLocations().set("NPC.Bridge.Yaw", player.getLocation().getYaw());
-            DuelsPlugin.getPlugin().getLocations().set("NPC.Bridge.Pitch", player.getLocation().getPitch());
+        } else if (minigame == "sumo") {
+            DuelsPlugin.getPlugin().getLocations().set("NPC.Sumo.World", player.getLocation().getWorld().getName());
+            DuelsPlugin.getPlugin().getLocations().set("NPC.Sumo.X", player.getLocation().getX());
+            DuelsPlugin.getPlugin().getLocations().set("NPC.Sumo.Y", player.getLocation().getY());
+            DuelsPlugin.getPlugin().getLocations().set("NPC.Sumo.Z", player.getLocation().getZ());
+            DuelsPlugin.getPlugin().getLocations().set("NPC.Sumo.Yaw", player.getLocation().getYaw());
+            DuelsPlugin.getPlugin().getLocations().set("NPC.Sumo.Pitch", player.getLocation().getPitch());
             DuelsPlugin.getPlugin().getLocations().save();
         } else if (minigame == "gladiator") {
             DuelsPlugin.getPlugin().getLocations().set("NPC.Gladiator.World", player.getLocation().getWorld().getName());
@@ -116,13 +116,13 @@ public class LocationsManagers {
                     sectionNPC.getDouble("Soup.Z"),
                     (float) sectionNPC.getDouble("Soup.Yaw"),
                     (float) sectionNPC.getDouble("Soup.Pitch"));
-        } else if (minigame == "bridge") {
-            return new Location(Bukkit.getWorld(sectionNPC.getString("Bridge.World")),
-                    sectionNPC.getDouble("Bridge.X"),
-                    sectionNPC.getDouble("Bridge.Y"),
-                    sectionNPC.getDouble("Bridge.Z"),
-                    (float) sectionNPC.getDouble("Bridge.Yaw"),
-                    (float) sectionNPC.getDouble("Bridge.Pitch"));
+        } else if (minigame == "sumo") {
+            return new Location(Bukkit.getWorld(sectionNPC.getString("Sumo.World")),
+                    sectionNPC.getDouble("Sumo.X"),
+                    sectionNPC.getDouble("Sumo.Y"),
+                    sectionNPC.getDouble("Sumo.Z"),
+                    (float) sectionNPC.getDouble("Sumo.Yaw"),
+                    (float) sectionNPC.getDouble("Sumo.Pitch"));
         } else if (minigame == "gladiator") {
             return new Location(Bukkit.getWorld(sectionNPC.getString("Gladiator.World")),
                     sectionNPC.getDouble("Gladiator.X"),

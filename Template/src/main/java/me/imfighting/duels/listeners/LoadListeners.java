@@ -14,6 +14,7 @@ import me.imfighting.duels.npc.NPCs;
 import me.imfighting.duels.util.ActionBar;
 import me.imfighting.duels.util.ConfigUtil;
 import me.imfighting.duels.util.ItemBuilder;
+import net.minecraft.server.v1_8_R3.BlockPlant;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import net.minecraft.server.v1_8_R3.NPC;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
@@ -26,6 +27,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
@@ -74,8 +77,8 @@ public class LoadListeners implements Listener {
             SQLConnection.createPlayer(player, MinigameType.GLADIATOR);
         }
 
-        if (!SQLConnection.containsPlayer(player, MinigameType.BRIDGE)) {
-            SQLConnection.createPlayer(player, MinigameType.BRIDGE);
+        if (!SQLConnection.containsPlayer(player, MinigameType.SUMO)) {
+            SQLConnection.createPlayer(player, MinigameType.SUMO);
         }
 
         if (!SQLConnection.containsPlayer(player, MinigameType.GAPPLE)) {
@@ -97,7 +100,7 @@ public class LoadListeners implements Listener {
         }
 
         for (Player online : Bukkit.getOnlinePlayers()) {
-            if (!DuelsPlugin.getPlugin().getArenaManager().getArena(online, MinigameType.BRIDGE).getPlayers().contains(online)) {
+            if (!DuelsPlugin.getPlugin().getArenaManager().getArena(online, MinigameType.SUMO).getPlayers().contains(online)) {
                 player.hidePlayer(online);
                 online.hidePlayer(player);
             }
@@ -171,17 +174,17 @@ public class LoadListeners implements Listener {
             npc.showTo(player);
         }
 
-        if (SQLConnection.containsNPC("bridge")) {
+        if (SQLConnection.containsNPC("sumo")) {
             NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
-                    .name("§bThe bridge")
+                    .name("§bSumo")
                     .hideNametag(false)
-                    .texture(sectionSkins.getString("Bridge.texture"))
-                    .signature(sectionSkins.getString("Bridge.signature"))
+                    .texture(sectionSkins.getString("Sumo.texture"))
+                    .signature(sectionSkins.getString("Sumo.signature"))
                     .location(new Location(
-                            Bukkit.getWorld(SQLConnection.getLocationNPCWorld("bridge")),
-                            SQLConnection.getLocationNPC("bridge", "x"),
-                            SQLConnection.getLocationNPC("bridge", "y"),
-                            SQLConnection.getLocationNPC("bridge", "z")
+                            Bukkit.getWorld(SQLConnection.getLocationNPCWorld("sumo")),
+                            SQLConnection.getLocationNPC("sumo", "x"),
+                            SQLConnection.getLocationNPC("sumo", "y"),
+                            SQLConnection.getLocationNPC("sumo", "z")
                     ))
                     .build()
             );
@@ -255,9 +258,9 @@ public class LoadListeners implements Listener {
             arenaGladiator.removePlayer(e.getPlayer());
         }
 
-        Arena arenaBridge = DuelsPlugin.getPlugin().getArenaManager().getArena(e.getPlayer(), MinigameType.BRIDGE);
-        if (arenaBridge != null) {
-            arenaBridge.removePlayer(e.getPlayer());
+        Arena arenaSumo = DuelsPlugin.getPlugin().getArenaManager().getArena(e.getPlayer(), MinigameType.SUMO);
+        if (arenaSumo != null) {
+            arenaSumo.removePlayer(e.getPlayer());
         }
 
         Arena arenaGapple = DuelsPlugin.getPlugin().getArenaManager().getArena(e.getPlayer(), MinigameType.GAPPLE);
@@ -319,7 +322,7 @@ public class LoadListeners implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.BRIDGE).reset(true);
+                    DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.SUMO).reset(true);
                 }
             }.runTaskLater(DuelsPlugin.getPlugin(), 1L);
 
@@ -386,8 +389,8 @@ public class LoadListeners implements Listener {
             e.setCancelled(false);
         }
 
-        if ((DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.BRIDGE) != null) &&
-                DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.BRIDGE).getState() == GameState.LIVE) {
+        if ((DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.SUMO) != null) &&
+                DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.SUMO).getState() == GameState.LIVE) {
             e.setCancelled(false);
         }
 
@@ -408,6 +411,40 @@ public class LoadListeners implements Listener {
     @EventHandler
     public void onWeatherChange(WeatherChangeEvent e) {
         e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent e) {
+        Player player = e.getPlayer();
+        e.setCancelled(true);
+
+        Arena arenaGapple = DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.GAPPLE);
+        Arena arenaGladiator = DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.GLADIATOR);
+
+        if (arenaGapple != null) {
+            e.setCancelled(false);
+        }
+
+        if (arenaGladiator != null) {
+            e.setCancelled(false);
+        }
+    }
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent e) {
+        Player player = e.getPlayer();
+        e.setCancelled(true);
+
+        Arena arenaGapple = DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.GAPPLE);
+        Arena arenaGladiator = DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.GLADIATOR);
+
+        if (arenaGapple != null) {
+            e.setCancelled(false);
+        }
+
+        if (arenaGladiator != null) {
+            e.setCancelled(false);
+        }
     }
 
 

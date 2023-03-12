@@ -15,7 +15,7 @@ public class ArenaManager {
 
     private List<Arena> arenasSoup = new ArrayList<>();
     private List<Arena> arenasGladiator = new ArrayList<>();
-    private List<Arena> arenasBridge = new ArrayList<>();
+    private List<Arena> arenasSumo = new ArrayList<>();
     private List<Arena> arenasGapple = new ArrayList<>();
 
     public ArenaManager(DuelsPlugin minigames) {
@@ -50,18 +50,18 @@ public class ArenaManager {
                             )));
         }
 
-        for (String str : config.getConfigurationSection("Bridge.").getKeys(false)) {
-            arenasBridge.add(
+        for (String str : config.getConfigurationSection("Sumo.").getKeys(false)) {
+            arenasSumo.add(
                     new Arena(
                             minigames,
                             Integer.parseInt(str),
                             new Location(
-                                    Bukkit.getWorld(config.getString("Bridge." + str + ".world")),
-                                    config.getDouble("Bridge." + str + ".x"),
-                                    config.getDouble("Bridge." + str + ".y"),
-                                    config.getDouble("Bridge." + str + ".z"),
-                                    (float) config.getDouble("Bridge." + str + ".yaw"),
-                                    (float) config.getDouble("Bridge." + str + ".pitch")
+                                    Bukkit.getWorld(config.getString("Sumo." + str + ".world")),
+                                    config.getDouble("Sumo." + str + ".x"),
+                                    config.getDouble("Sumo." + str + ".y"),
+                                    config.getDouble("Sumo." + str + ".z"),
+                                    (float) config.getDouble("Sumo." + str + ".yaw"),
+                                    (float) config.getDouble("Sumo." + str + ".pitch")
                             )));
         }
 
@@ -90,8 +90,8 @@ public class ArenaManager {
         return arenasGladiator;
     }
 
-    public List<Arena> getArenasBridge() {
-        return arenasBridge;
+    public List<Arena> getArenasSumo() {
+        return arenasSumo;
     }
 
     public List<Arena> getArenasGapple() {
@@ -111,8 +111,8 @@ public class ArenaManager {
                     return arena;
                 }
             }
-        } else if (minigameType == MinigameType.BRIDGE) {
-            for (Arena arena : arenasBridge) {
+        } else if (minigameType == MinigameType.SUMO) {
+            for (Arena arena : arenasSumo) {
                 if (arena.getPlayers().contains(player.getUniqueId())) {
                     return arena;
                 }
@@ -142,8 +142,8 @@ public class ArenaManager {
                     return arena;
                 }
             }
-        } else if (minigameType == MinigameType.BRIDGE) {
-            for (Arena arena : arenasBridge) {
+        } else if (minigameType == MinigameType.SUMO) {
+            for (Arena arena : arenasSumo) {
                 if (arena.getId() == id) {
                     return arena;
                 }
