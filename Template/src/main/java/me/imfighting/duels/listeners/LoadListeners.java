@@ -47,6 +47,8 @@ import java.util.Random;
 public class LoadListeners implements Listener {
 
     final ConfigUtil config = DuelsPlugin.getPlugin().getConfig();
+
+    final ConfigUtil arenas = DuelsPlugin.getPlugin().getArenas();
     static final ConfigUtil locations = DuelsPlugin.getPlugin().getLocations();
     final ConfigurationSection section = config.getConfigurationSection("item-desafiar");
     static final ConfigurationSection sectionLobbySoup = locations.getConfigurationSection("Soup");
@@ -227,7 +229,7 @@ public class LoadListeners implements Listener {
 
         if (SQLConnection.containsNPCPlay("soup")) {
             NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
-                    .name("§a§lSopa 1v1")
+                    .name("§bSopa 1v1")
                     .hideNametag(false)
                     .texture(sectionSkins.getString("Soup-Lobby.texture"))
                     .signature(sectionSkins.getString("Soup-Lobby.signature"))
@@ -303,35 +305,45 @@ public class LoadListeners implements Listener {
             }
             drops.clear();
 
-
             Player player = event.getEntity();
+
+            player.getKiller().sendTitle("§a§lVENCEU", "§c" + player.getKiller().getName() + " §evenceu!");
+            player.sendTitle("§4§LPERDEU", "§c" + player.getKiller().getName() + " §evenceu!");
+
+            player.sendMessage("§9" + player.getName() + " §efoi morto por §c" + player.getKiller().getName() + "§e.");
+            player.sendMessage("§c" + player.getKiller().getName() + " §evenceu.");
+
+            player.getKiller().sendMessage("§c" + player.getName() + " §efoi morto por §9" + player.getKiller().getName() +
+                    "§e.");
+            player.getKiller().sendMessage("§9" + player.getKiller().getName() + " §evenceu.");
+
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.SOUP).reset(true);
                 }
-            }.runTaskLater(DuelsPlugin.getPlugin(), 1L);
+            }.runTaskLater(DuelsPlugin.getPlugin(), 20*3);
 
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.GLADIATOR).reset(true);
                 }
-            }.runTaskLater(DuelsPlugin.getPlugin(), 1L);
+            }.runTaskLater(DuelsPlugin.getPlugin(), 20*3);
 
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.SUMO).reset(true);
                 }
-            }.runTaskLater(DuelsPlugin.getPlugin(), 1L);
+            }.runTaskLater(DuelsPlugin.getPlugin(), 20*3);
 
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.GAPPLE).reset(true);
                 }
-            }.runTaskLater(DuelsPlugin.getPlugin(), 1L);
+            }.runTaskLater(DuelsPlugin.getPlugin(), 20*3);
 
             SQLConnection.addWins(player.getKiller(), MinigameType.SOUP);
             SQLConnection.addLosses(player, MinigameType.SOUP);
@@ -456,60 +468,24 @@ public class LoadListeners implements Listener {
         if (clicked.getName().equalsIgnoreCase("§bSopa")) {
             if (event.getClickAction() == NPCClickAction.ATTACK) return;
             joinSoupLobby(player);
-        } else if (clicked.getName().equalsIgnoreCase("§a§lSopa 1v1")) {
-            if (DuelsPlugin.getPlugin().getArenaManager().getArena(0, MinigameType.SOUP).getPlayers().size() == 1) {
-                GameManager.sendGame(player, "soup", 0);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(1, MinigameType.SOUP).getPlayers().size() == 1) {
-                GameManager.sendGame(player, "soup", 1);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(2, MinigameType.SOUP).getPlayers().size() == 1) {
-                GameManager.sendGame(player, "soup", 2);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(3, MinigameType.SOUP).getPlayers().size() == 1) {
-                GameManager.sendGame(player, "soup", 3);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(4, MinigameType.SOUP).getPlayers().size() == 1) {
-                GameManager.sendGame(player, "soup", 4);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(5, MinigameType.SOUP).getPlayers().size() == 1) {
-                GameManager.sendGame(player, "soup", 5);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(6, MinigameType.SOUP).getPlayers().size() == 1) {
-                GameManager.sendGame(player, "soup", 6);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(7, MinigameType.SOUP).getPlayers().size() == 1) {
-                GameManager.sendGame(player, "soup", 7);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(8, MinigameType.SOUP).getPlayers().size() == 1) {
-                GameManager.sendGame(player, "soup", 8);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(9, MinigameType.SOUP).getPlayers().size() == 1) {
-                GameManager.sendGame(player, "soup", 9);
-            } else {
-                Random random = new Random();
-                GameManager.sendGame(player, "soup", random.nextInt(11));
-            }
+        } else if (clicked.getName().equalsIgnoreCase("§bSopa 1v1")) {
+
+            DuelsPlugin.getPlugin().getArenaManager().getArenas(MinigameType.SOUP)
+                    .stream()
+                    .filter(arena -> arena.getState()
+                            .equals(GameState.RECRUITING))
+                    .findFirst()
+                    .orElse(null);
         }
 
         if (clicked.getName().equalsIgnoreCase("§bGladiator")) {
             if (event.getClickAction() == NPCClickAction.ATTACK) return;
             joinGladiatorLobby(player);
         } else if (clicked.getName().equalsIgnoreCase("§bGladiator 1v1")) {
-            if (DuelsPlugin.getPlugin().getArenaManager().getArena(0, MinigameType.GLADIATOR).getPlayers().size() == 1) {
-                GameManager.sendGame(player, "soup", 0);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(1, MinigameType.GLADIATOR).getPlayers().size() == 1) {
-                GameManager.sendGame(player, "soup", 1);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(2, MinigameType.GLADIATOR).getPlayers().size() == 1) {
-                GameManager.sendGame(player, "soup", 2);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(3, MinigameType.GLADIATOR).getPlayers().size() == 1) {
-                GameManager.sendGame(player, "soup", 3);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(4, MinigameType.GLADIATOR).getPlayers().size() == 1) {
-                GameManager.sendGame(player, "soup", 4);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(5, MinigameType.GLADIATOR).getPlayers().size() == 1) {
-                GameManager.sendGame(player, "soup", 5);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(6, MinigameType.GLADIATOR).getPlayers().size() == 1) {
-                GameManager.sendGame(player, "soup", 6);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(7, MinigameType.GLADIATOR).getPlayers().size() == 1) {
-                GameManager.sendGame(player, "soup", 7);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(8, MinigameType.GLADIATOR).getPlayers().size() == 1) {
-                GameManager.sendGame(player, "soup", 8);
-            } else if (DuelsPlugin.getPlugin().getArenaManager().getArena(9, MinigameType.GLADIATOR).getPlayers().size() == 1) {
-                GameManager.sendGame(player, "soup", 9);
-            } else {
-                Random random = new Random();
-                GameManager.sendGame(player, "soup", random.nextInt(11));
+            for (Arena arena : DuelsPlugin.getPlugin().getArenaManager().getArenas(MinigameType.GLADIATOR)) {
+                if (arena.getState() == GameState.RECRUITING) {
+                    GameManager.sendGame(player, "gladiator", arena.getId());
+                }
             }
         }
 

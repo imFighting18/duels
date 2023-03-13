@@ -24,7 +24,6 @@ public class GameManager {
             if (arena.getState() == GameState.RECRUITING) {
                 arena.addPlayer(player);
                 arena.setMinigameType(MinigameType.SOUP);
-
             } else {
                 player.sendMessage("§cVocê não pode entrar nesta arena agora.");
             }

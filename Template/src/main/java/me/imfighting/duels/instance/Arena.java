@@ -104,6 +104,7 @@ public class Arena {
         players.remove(player.getUniqueId());
         LoadListeners.joinSoupLobby(player);
         player.sendTitle("", "");
+        sendMessage("§7" + player.getName() + " §esaiu fo jogo. §a(" + getPlayers().size() + "/2)");
 
         if (state == GameState.COUNTDOWN && players.size() < 2) {
             sendMessage("§cJogadores insuficientes para começar a partida.");

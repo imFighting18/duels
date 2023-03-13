@@ -109,7 +109,7 @@ public class PlayerManager {
 
         if (SQLConnection.containsNPCPlay("soup")) {
             NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
-                    .name("§a§lSopa 1v1")
+                    .name("§bSopa 1v1")
                     .hideNametag(false)
                     .texture(sectionSkins.getString("Soup-Lobby.texture"))
                     .signature(sectionSkins.getString("Soup-Lobby.signature"))
@@ -144,7 +144,7 @@ public class PlayerManager {
         if (DuelsPlugin.getPlugin().getArenaManager().getArena(player, MinigameType.SOUP).getMinigameType() == MinigameType.SOUP) {
             if (SQLConnection.containsNPCPlay("soup")) {
                 NPCs npc = DuelsPlugin.getPlugin().getNpcManager().newNPC(NPCOptions.builder()
-                        .name("§a§lSopa 1v1")
+                        .name("§bSopa 1v1")
                         .hideNametag(false)
                         .texture(sectionSkins.getString("Soup-Lobby.texture"))
                         .signature(sectionSkins.getString("Soup-Lobby.signature"))

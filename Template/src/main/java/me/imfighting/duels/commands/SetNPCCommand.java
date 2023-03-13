@@ -107,5 +107,4 @@ public class SetNPCCommand implements CommandExecutor {
             SQLConnection.setLocation(player, "gapple");
         }
     }
-
 }

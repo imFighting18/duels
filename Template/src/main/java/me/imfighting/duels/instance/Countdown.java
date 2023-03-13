@@ -5,6 +5,7 @@ import me.imfighting.duels.GameState;
 import me.imfighting.duels.managers.GameManager;
 import me.imfighting.duels.managers.ScoreboardManager;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Score;
 
@@ -39,10 +40,10 @@ public class Countdown extends BukkitRunnable {
             Bukkit.getPlayer(uuid).setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
             ScoreboardManager.updateScoreboardStartingSoup(Bukkit.getPlayer(uuid));
             Bukkit.getPlayer(uuid).getScoreboard().getTeam("starting").setSuffix("§a" + countdownSeconds);
+            Bukkit.getPlayer(uuid).playSound(Bukkit.getPlayer(uuid).getLocation(), Sound.NOTE_STICKS, 5f, 5f);
         }
 
         arena.sendTitle("§a" + countdownSeconds + " segundo" + (countdownSeconds == 1 ? "" : "s"), "irá começar.");
-
         countdownSeconds--;
 
     }

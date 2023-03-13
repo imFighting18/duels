@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.imfighting</groupId>
-    <artifactId>Template</artifactId>
+    <artifactId>Duels</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Template</name>
+    <name>Duels</name>
 
     <properties>
         <java.version>1.8</java.version>

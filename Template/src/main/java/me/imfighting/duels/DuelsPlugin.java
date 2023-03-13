@@ -1,8 +1,6 @@
 package me.imfighting.duels;
 
-import me.imfighting.duels.commands.SetLobbyCommand;
-import me.imfighting.duels.commands.SetNPCCommand;
-import me.imfighting.duels.commands.SetNPCGameCommand;
+import me.imfighting.duels.commands.*;
 import me.imfighting.duels.database.SQLConnection;
 import me.imfighting.duels.listeners.LoadListeners;
 import me.imfighting.duels.managers.ArenaManager;
@@ -59,6 +57,10 @@ public final class DuelsPlugin extends JavaPlugin {
         getCommand("setlobby").setExecutor(new SetLobbyCommand());
         getCommand("setnpc").setExecutor(new SetNPCCommand());
         getCommand("setnpcgame").setExecutor(new SetNPCGameCommand());
+        getCommand("lobby").setExecutor(new LobbyCommand());
+        getCommand("setarena").setExecutor(new SetArenaCommand());
+        getCommand("setpos").setExecutor(new SetPosCommand());
+
 
         removeMobs();
         alwaysDay();

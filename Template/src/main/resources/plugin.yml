@@ -6,3 +6,7 @@ commands:
   setlobby:
   setnpc:
   setnpcgame:
+  lobby:
+    aliases: ['l']
+  setarena:
+  setpos:
